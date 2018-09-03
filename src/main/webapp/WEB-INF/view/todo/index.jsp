@@ -29,22 +29,28 @@
 	<Script>
 		$(function(){
 			
+			var maxPage = 0;
+			
 			getTodoList();
 			
 			function getTodoList(){
 				
 				$.getJSON("/todo/getList", {
-					name: $("#queryName").val(),
+					name: $("#hidName").val(),
 					pageNumber: $("#pageNumber").val()
 					}, function(data){
-						
-					  var template = $('#todoTemplate').html();
+						var template = $('#todoTemplate').html();
 			            Mustache.parse(template);   // optional, speeds up future uses
 			            var rendered = Mustache.render(template, {
-			                "todoList": data
+			                "todoList": data.result
 			            });
 			            
+			            $("#currentPage").html(data.currentPage + " / " + data.totalPage);
 			            $("#todo").html(rendered);
+
+			            $("#nextPage").attr("disabled",data.totalPage <= data.currentPage);
+			            $("#prevPage").attr("disabled",data.currentPage <= 1);
+			            
 				});
 			}
 			
@@ -65,6 +71,32 @@
 
 				getTodoList();
 			});
+			
+			$("#btnAdd").click(function(){
+				window.location = '/todo/addPage';
+				
+			});
+			
+			$("#btnQuery").click(function(){
+				$("#pageNumber").val(1);
+				$("#hidName").val($("#queryName").val());
+				getTodoList();
+			});
+			
+			$("#todo").on("click", ".btnDelete", function(){
+				var currentId = $(this).data("id");
+
+				$.post( "/todo/delete", {
+							"id": currentId
+						}, function(result){
+							if(result){
+								getTodoList();
+							}else{
+								alert("System error!!")
+							}
+							
+			          });
+			});
 		});
 		
 	</Script>
@@ -72,15 +104,14 @@
 <body>
 <fieldset>
 	<legend>List</legend>
-	<form id="queryForm" action="/todo" method="get">
-		<input type="text" id="queryName' name="name" value="" placeholder="Please input name..." />
-		<input type="hidden" id="pageNumber" name="pageNumber" value="1" />
-		<input type="button" id="prevPage" name="prevPage" value="prev">
-		<input type="button" id="nextPage" name="nextPage" value="next">
-		<input type="submit" value="Query" />
-		<input id="btnAdd" type="button" value="Add" />
-	</form>
-	Current Page Number : 
+	
+	<input type="text" id="queryName" placeholder="Please input name..." />
+	<input type="button" id="btnQuery" value="Query" />
+	<input type="button" id="btnAdd" value="Add" />
+	<input type="hidden" id="hidName" name="name" value="" />
+
+	<br>
+	Current Page Number : <span id="currentPage"></span>
 	<ul class="todoList">
 		<li class="list-head">
 			<b>Name</b>
@@ -88,6 +119,13 @@
 			<span>Action</span>
 		</li>
 	</ul>
+	<ul id="todo" class="todoList">
+	
+	</ul>
+	
+	<input type="hidden" id="pageNumber" value="1" />
+	<input type="button" id="prevPage" value="prev">
+	<input type="button" id="nextPage" value="next">
 </fieldset>
 
 <script type="text/html" id="todoTemplate">
@@ -95,7 +133,7 @@
 <li>
 <b>{{name}}</b>
 <span>{{detail}}</span>
-<input type="submit" class="btnDelete" value="delete" />
+<input type="button" class="btnDelete" data-id="{{id}}" value="delete" />
 </li>
 {{/todoList}}
 </script>

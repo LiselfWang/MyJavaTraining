@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.leo.model.Pager;
 import com.leo.model.Todo;
 
 import org.springframework.ui.Model;
@@ -62,7 +63,7 @@ public class TodoController {
 
 	@ResponseBody
 	@RequestMapping(path = "getList", method = RequestMethod.GET)
-	public ArrayList<Todo> getList(String name, Integer pageNumber, Model model, HttpSession session) {
+	public Pager<Todo> getList(String name, Integer pageNumber, Model model, HttpSession session) {
 
 		if (pageNumber == null || pageNumber == 0) {
 			pageNumber = 1;
@@ -99,13 +100,14 @@ public class TodoController {
 		if (todoList.size() % TODO_PAGE_SIZE != 0) {
 			totalPage++;
 		}
-
-//		model.addAttribute(TODO_LIST_MODEL_KEY, finalResult);
-//		model.addAttribute(TODO_LIST_TOTAL_PAGE_KEY, totalPage);
-//		model.addAttribute(QUERY_NAME_MODEL_KEY, name);
-//		model.addAttribute(QUERY_PAGE_NUMBER_MODEL_KEY, pageNumber);
-
-		return finalResult;
+		
+		Pager<Todo> resultPager = new Pager<Todo>();
+		resultPager.setPageSize(TODO_PAGE_SIZE);
+		resultPager.setTotalCount(todoList.size());
+		resultPager.setResult(finalResult);
+		resultPager.setCurrentPage(pageNumber);
+		resultPager.setTotalPage(totalPage);
+		return resultPager;
 	}
 
 	@RequestMapping(path = "/addPage", method = RequestMethod.GET)
@@ -120,24 +122,18 @@ public class TodoController {
 		return "redirect:/todo";
 	}
 
+	@ResponseBody
 	@RequestMapping(path = "/delete", method = RequestMethod.POST)
-	public String Delete(String id, HttpSession session) {
+	public Boolean Delete(String id, HttpSession session) {
 		ArrayList<Todo> todoList = getTodoList(session);
 		for (int i = 0; i < todoList.size(); i++) {
 			Todo current = todoList.get(i);
-
 			if (current.getId().equals(id)) {
 				todoList.remove(current);
 			}
 		}
 
-		return "redirect:/todo";
+		return true;
 	}
 
-	@ResponseBody
-	@RequestMapping(path = "/ajaxDelete", method = RequestMethod.POST)
-	public ArrayList<Todo> AjaxDelete(String id, HttpSession session) {
-		ArrayList<Todo> todoList = getTodoList(session);
-		return todoList;
-	}
 }
