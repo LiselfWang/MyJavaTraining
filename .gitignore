@@ -1,0 +1,8 @@
+/target/m2e-wtp
+/target/maven-archiver
+/target/maven-status
+/target/MyMVC
+/target/test-classes
+/target/.gitignore
+/target/MyMVC.war
+/target/classes/com
