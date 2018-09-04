@@ -4,8 +4,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
 import javax.servlet.http.HttpSession;
 import com.leo.model.Information;
+import com.leo.model.QuaryPage;
+
 import java.util.ArrayList;
 
 @Controller
@@ -38,7 +42,13 @@ public class TicketController {
 	}
 
 	@RequestMapping(path = "", method = RequestMethod.GET)
-	public String webshow(String id, Integer pagenumber, Model model, HttpSession session) {
+	public String show( Model model, HttpSession session) {
+		return "background";
+	}
+	
+	@ResponseBody
+	@RequestMapping(path = "/getinfolist", method = RequestMethod.GET)
+	public QuaryPage<Information> getinfolist(String id, Integer pagenumber, Model model, HttpSession session) {
 		if (pagenumber == null || pagenumber == 0) {
 			pagenumber = 1;
 		}
@@ -69,12 +79,15 @@ public class TicketController {
 		if ((infolist.size() % pagesize) != 0) {
 			totalpage++;
 		}
-
-		model.addAttribute("webshowlist", finallist);
-		model.addAttribute("queryid", id);
-		model.addAttribute("pagenumber", pagenumber);
-		model.addAttribute("totalpage", totalpage);
-		return "background";
+ 
+		QuaryPage<Information> result = new QuaryPage<Information>();
+		result.setTotalcount(infolist.size());
+		result.setPagenumber(pagenumber);
+		result.setTotalpage(totalpage);
+		result.setResult(finallist);
+		result.setPagesize(pagesize);
+		return result;
+		
 	}
 
 	@RequestMapping(path = "/addPage", method = RequestMethod.GET)
@@ -90,7 +103,7 @@ public class TicketController {
 	}
 
 	@RequestMapping(path = "/delete", method = RequestMethod.POST)
-	public String deleteone(String id, HttpSession session) {
+	public boolean deleteone(String id, HttpSession session) {
 		ArrayList<Information> infolist = getinfolist(session);
 		for (int i = 0; i < infolist.size(); i++) {
 			Information deleteone = infolist.get(i);
@@ -98,7 +111,7 @@ public class TicketController {
 				infolist.remove(deleteone);
 			}
 		}
-		return ("redirect:/buytickets");
+		return true;
 	}
 
 }

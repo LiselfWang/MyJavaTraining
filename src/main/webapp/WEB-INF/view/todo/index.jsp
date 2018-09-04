@@ -27,6 +27,7 @@
 	</style>
 	
 	<Script>
+
 		$(function(){
 			
 			var maxPage = 0;
@@ -39,6 +40,12 @@
 					name: $("#hidName").val(),
 					pageNumber: $("#pageNumber").val()
 					}, function(data){
+						for(var i = 0; i< data.result.length; i++){
+							var currentTodo = data.result[i];
+							var currentDate = new Date(currentTodo.createDate)
+							currentTodo.formattedDate = currentDate.getFullYear() + "/" + (currentDate.getMonth()+1) + "/" + currentDate.getDate();
+						}	
+						
 						var template = $('#todoTemplate').html();
 			            Mustache.parse(template);   // optional, speeds up future uses
 			            var rendered = Mustache.render(template, {
@@ -97,6 +104,12 @@
 							
 			          });
 			});
+			
+			$("#todo").on("click", ".btnEdit", function(){
+				var currentId = $(this).data("id");
+
+				window.location = "/todo/editPage?id=" + currentId;
+			});
 		});
 		
 	</Script>
@@ -104,18 +117,17 @@
 <body>
 <fieldset>
 	<legend>List</legend>
-	
 	<input type="text" id="queryName" placeholder="Please input name..." />
 	<input type="button" id="btnQuery" value="Query" />
 	<input type="button" id="btnAdd" value="Add" />
 	<input type="hidden" id="hidName" name="name" value="" />
-
 	<br>
 	Current Page Number : <span id="currentPage"></span>
 	<ul class="todoList">
 		<li class="list-head">
 			<b>Name</b>
 			<span>Detail</span>
+			<span>Create Date</span>
 			<span>Action</span>
 		</li>
 	</ul>
@@ -133,6 +145,8 @@
 <li>
 <b>{{name}}</b>
 <span>{{detail}}</span>
+<span>{{formattedDate}}</span>
+<input type="button" class="btnEdit" data-id="{{id}}" value="edit" />
 <input type="button" class="btnDelete" data-id="{{id}}" value="delete" />
 </li>
 {{/todoList}}

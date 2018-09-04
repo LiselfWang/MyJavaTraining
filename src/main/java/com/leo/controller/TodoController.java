@@ -1,6 +1,7 @@
 package com.leo.controller;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 
 import javax.servlet.http.HttpSession;
@@ -122,6 +123,39 @@ public class TodoController {
 		return "redirect:/todo";
 	}
 
+	
+	@RequestMapping(path = "/editPage", method = RequestMethod.GET)
+	public String editPage(String id, Model model,  HttpSession session) {
+		ArrayList<Todo> todoList = getTodoList(session);
+		for(int i = 0; i < todoList.size(); i++) {
+			Todo current = todoList.get(i);
+			if(current.getId().equals(id)) {
+				model.addAttribute("todo", current);
+				break;
+			}
+		}
+		
+		return "todo/edit";
+	}
+	
+	@RequestMapping(path = "/edit", method = RequestMethod.POST)
+	public String edit(Todo todo, Model model,  HttpSession session) {
+		ArrayList<Todo> todoList = getTodoList(session);
+		for(int i = 0; i < todoList.size(); i++) {
+			Todo current = todoList.get(i);
+			if(current.getId().equals(todo.getId())) {
+				
+				current.setName(todo.getName());
+				current.setDetail(todo.getDetail());
+				
+				break;
+			}
+		}
+		
+		
+		return "redirect:/todo";
+	}
+	
 	@ResponseBody
 	@RequestMapping(path = "/delete", method = RequestMethod.POST)
 	public Boolean Delete(String id, HttpSession session) {
