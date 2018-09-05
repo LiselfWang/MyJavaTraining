@@ -101,7 +101,37 @@ public class TicketController {
 		infolist.add(info);
 		return ("redirect:/buytickets");
 	}
-
+	
+	
+	@RequestMapping(path = "/editPage", method = RequestMethod.GET)
+	public String editpage(String currentid,Model model,HttpSession session) {
+		ArrayList<Information> infolist = getinfolist(session);
+		for (int i = 0; i < infolist.size(); i++) {
+			Information editone = infolist.get(i);
+			if (editone.getId().equals(currentid)) {
+				model.addAttribute("info", editone);
+				break;
+			}
+		}
+		return "Editpage";
+	}
+	
+	@RequestMapping(path = "/edit", method = RequestMethod.POST)
+	public String editinfo(Information info,Model model,HttpSession session) {
+		ArrayList<Information> infolist = getinfolist(session);
+		for (int i = 0; i < infolist.size(); i++) {
+			Information editone = infolist.get(i);
+			if (editone.getId().equals(info.getId())) {
+				editone.setName(info.getName());
+				editone.setAge(info.getAge());
+				editone.setDestination(info.getDestination());
+				break;
+			}
+		}
+		return "redirect:/buytickets";
+	}
+	
+	@ResponseBody
 	@RequestMapping(path = "/delete", method = RequestMethod.POST)
 	public boolean deleteone(String id, HttpSession session) {
 		ArrayList<Information> infolist = getinfolist(session);

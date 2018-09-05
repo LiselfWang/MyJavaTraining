@@ -2,13 +2,13 @@ package com.leo.model;
 
 import java.util.ArrayList;
 
-public class Pager<T> {
+public class Pager {
 
 	private int pageSize = 10;
 	private int totalCount = 0;
 	private int totalPage = 0;
 	private int currentPage = 1;
-	private ArrayList<T> result;
+	private ArrayList<Object> result;
 	
 	public int getPageSize() {
 		return pageSize;
@@ -44,11 +44,11 @@ public class Pager<T> {
 	}
 
 	
-	public ArrayList<T> getResult() {
+	public ArrayList<Object> getResult() {
 		return result;
 	}
 
-	public void setResult(ArrayList<T> result) {
+	public void setResult(ArrayList<Object> result) {
 		this.result = result;
 	}
 

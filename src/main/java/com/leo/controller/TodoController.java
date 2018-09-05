@@ -64,7 +64,7 @@ public class TodoController {
 
 	@ResponseBody
 	@RequestMapping(path = "getList", method = RequestMethod.GET)
-	public Pager<Todo> getList(String name, Integer pageNumber, Model model, HttpSession session) {
+	public Pager getList(String name, Integer pageNumber, Model model, HttpSession session) {
 
 		if (pageNumber == null || pageNumber == 0) {
 			pageNumber = 1;
@@ -89,10 +89,10 @@ public class TodoController {
 			// 通过name来筛选
 		}
 
-		ArrayList<Todo> finalResult = new ArrayList<Todo>();
+		ArrayList<Object> finalResult = new ArrayList<Object>();
 		for (int q = 0; q < todoList.size(); q++) {
 			if (q >= (TODO_PAGE_SIZE * (pageNumber - 1)) && q < (TODO_PAGE_SIZE * (pageNumber))) {
-				finalResult.add(todoList.get(q));
+				finalResult.add((Object)todoList.get(q));
 			}
 		}
 
@@ -102,12 +102,15 @@ public class TodoController {
 			totalPage++;
 		}
 		
-		Pager<Todo> resultPager = new Pager<Todo>();
+		Pager resultPager = new Pager();
 		resultPager.setPageSize(TODO_PAGE_SIZE);
 		resultPager.setTotalCount(todoList.size());
 		resultPager.setResult(finalResult);
 		resultPager.setCurrentPage(pageNumber);
 		resultPager.setTotalPage(totalPage);
+		
+		
+		
 		return resultPager;
 	}
 

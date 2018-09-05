@@ -1,13 +1,25 @@
 package com.leo.model;
 
+import java.util.Date;
+
 public class Information {
 	String name;
 	int age;
 	String id;
 	String destination;
+	Date date;
 
 	public Information() {
 		this.id = java.util.UUID.randomUUID().toString();
+		this.date = new Date();
+	}
+
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
 	}
 
 	public String getName() {
