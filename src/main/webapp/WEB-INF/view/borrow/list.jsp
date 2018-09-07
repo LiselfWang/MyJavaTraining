@@ -14,13 +14,14 @@ font-size:0px;
 }
 
 
-.list .title{
+.list .title *{
 font-weight:bolder;
 font-size:20px;
 border-bottom:solid 1px #666;
 }
 
-.list li{
+.list .item{
+display:inline-block;
 width:200px;
 font-size:13px;
 }
@@ -30,7 +31,7 @@ font-size:13px;
 </head>
 <body>
 <fieldset>
-<legend>Borrow Record</legend>
+<legend><b>Borrow Record</b></legend>
 <input type="text" id="queryname" placeholder="please input your name">
 <input type="hidden" id="hiddenname" name="name" value="">
 <input type="button" value="Query">
@@ -38,21 +39,21 @@ font-size:13px;
 <span id="currentPage">当前的页码：</span>
 <ul class="list">
 <li class="title">
-<span>Name</span>
-<span>Class</span>
-<span>BorrowBook</span>
-<span>BorrowDate</span>
-<span>Action</span>
+<span class="item">Name</span>
+<span class="item">Classes</span>
+<span class="item">BorrowBook</span>
+<span class="item">BorrowDate</span>
+<span class="item">Action</span>
 </li>
 </ul>
 
 <ul class="list" id="record">
 <li>
-<span>name</span>
-<span>class</span>
-<span>bookname</span>
-<span>borrowdate</span>
-<span>
+<span class="item">name</span>
+<span class="item">classes</span>
+<span class="item">bookname</span>
+<span class="item">borrowdate</span>
+<span class="item">
 <input type="button" data-id={{id}} value="Delete">
 <input type="button" data-id={{id}} value="Edit">
 <span>
@@ -67,11 +68,11 @@ font-size:13px;
 <script type="text/html" id="template">
 {{#borrowlist}}
 <li>
-<span>{{name}}</span>
-<span>{{class}}</span>
-<span>{{bookname}}</span>
-<span>{{borrowdate}}</span>
-<span>
+<span class="item">{{name}}</span>
+<span class="item">{{classes}}</span>
+<span class="item">{{bookname}}</span>
+<span class="item">{{borrowdate}}</span>
+<span class="item">
 <input type="button" data-id={{id}} value="Delete">
 <input type="button" data-id={{id}} value="Edit">
 <span>
