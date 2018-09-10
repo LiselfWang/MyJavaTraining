@@ -21,7 +21,7 @@ public class BorrowController {
 	public ArrayList<Borrowperson> getfakelist(){
 		ArrayList<Borrowperson> fakelist = new ArrayList<Borrowperson>();
 		for (int i = 0; i < 100; i++) {
-			Borrowperson current = fakelist.get(i);
+			Borrowperson current = new Borrowperson();
 			current.setName("Fakename"+i);
 			current.setClasses("Class"+i);
 			current.setBookname("Book"+i);
@@ -30,15 +30,15 @@ public class BorrowController {
 		return fakelist;
 	}
 	
-	public ArrayList<Borrowperson> getborrowlist(HttpSession session){
+	public ArrayList<Borrowperson> getsession(HttpSession session){
 		Object obj = session.getAttribute("borrow");
-		ArrayList<Borrowperson> borrowlist = new ArrayList<Borrowperson>();
 		if(obj!=null){
-			borrowlist= (ArrayList<Borrowperson>) obj; 	
+			return (ArrayList<Borrowperson>) obj; 	
 		}else{
-			borrowlist = getfakelist();
+			ArrayList<Borrowperson> fakelist = getfakelist();
+			session.setAttribute("borrow", fakelist);
+			return fakelist;
 		}
-		return borrowlist;
 	}
 	
 
@@ -47,15 +47,98 @@ public class BorrowController {
 		return "borrow/list";
 	}
 	
+	
 	@ResponseBody
-	@RequestMapping(path = "/getshowpage", method = RequestMethod.GET)
-	public Pagerlist<Borrowperson> getshowpage(String name, Integer pagenumber,Model model, HttpSession session) {
+	@RequestMapping(path = "/getborrowlist", method = RequestMethod.GET)
+	public Pagerlist<Borrowperson> getborrowlist(String name, Integer pagenumber, HttpSession session) {
 		if(pagenumber==null || pagenumber==0){
 			pagenumber = 1;
 		}
+		ArrayList<Borrowperson> borrowlist = new ArrayList<Borrowperson>();
+		if(name==null || "".equals(name)) {
+			 borrowlist = getsession(session);
+		}else {
+			ArrayList<Borrowperson> tmplist = getsession(session);
+			for (int i = 0; i < tmplist.size(); i++) {
+				Borrowperson current = tmplist.get(i);
+				if(current.getName().indexOf(name)>-1) {
+					borrowlist.add(current);
+				}
+			}
+		}
 		
+			ArrayList<Borrowperson> resultlist = new ArrayList<Borrowperson>();
+		for (int q = 0; q < borrowlist.size(); q++) {
+			if(q>=pagesize*(pagenumber-1) && q<pagesize*pagenumber-1) {
+				resultlist.add(borrowlist.get(q));
+			}
+		}	
 		
+		int totalpage = borrowlist.size()/pagesize;
+		if(borrowlist.size()%pagesize!=0) {
+			totalpage++;
+		}
+		
+		Pagerlist<Borrowperson> data = new Pagerlist<Borrowperson>();
+		data.setResult(resultlist);
+		data.setPagenumber(pagenumber);
+		data.setPagesize(pagesize);
+		data.setTotalpage(totalpage);
+		return data;
 }
 	
+	@RequestMapping(path = "/addpage", method = RequestMethod.GET)
+	public String addpage(Model model, HttpSession session) {
+		return "borrow/addpage";
+	}
 	
+	@RequestMapping(path = "/addinfo", method = RequestMethod.POST)
+	public String addinfo(Borrowperson borrowone,HttpSession session) {
+		ArrayList<Borrowperson> borrowlist = getsession(session);
+		borrowlist.add(borrowone);
+		session.setAttribute("borrow", borrowlist);
+		return "redirect:/borrow";
+	}
+	
+	@RequestMapping(path = "/editpage", method = RequestMethod.GET)
+	public String editpage(String id, Model model, HttpSession session) {
+		ArrayList<Borrowperson> borrowlist = getsession(session);
+		for (int i = 0; i < borrowlist.size(); i++) {
+			Borrowperson editone = borrowlist.get(i);
+			if(editone.getId().equals(id)) {
+				model.addAttribute("editone", editone);
+				break;
+			}
+		}
+		return "borrow/editpage";
+	}
+	
+	@RequestMapping(path = "/editinfo", method = RequestMethod.POST)
+	public String editinfo(Borrowperson borrowone, Model model, HttpSession session) {
+		ArrayList<Borrowperson> borrowlist = getsession(session);
+		for (int i = 0; i < borrowlist.size(); i++) {
+			Borrowperson editone = borrowlist.get(i);
+			if(editone.getId().equals(borrowone.getId())) {
+				editone.setName(borrowone.getName());
+				editone.setClasses(borrowone.getClasses());
+				editone.setBookname(borrowone.getBookname());
+				break;
+			}
+		}
+		return "redirect:/borrow";
+	}
+	
+	@ResponseBody
+	@RequestMapping(path = "/delete", method = RequestMethod.POST)
+	public Boolean delete(String id, Model model, HttpSession session) {
+		ArrayList<Borrowperson> borrowlist = getsession(session);
+		for (int i = 0; i < borrowlist.size(); i++) {
+			Borrowperson deletetone = borrowlist.get(i);
+			if(deletetone.getId().equals(id)) {
+				borrowlist.remove(deletetone);
+				break;
+			}
+			}
+		return true;
+	}
 }
