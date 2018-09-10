@@ -1,0 +1,1 @@
+DELETE TodoList WHERE (id % 2) = 0

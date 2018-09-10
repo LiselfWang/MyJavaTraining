@@ -1,0 +1,1 @@
+UPDATE TodoList SET createBy = 'LEO' WHERE (id % 3) = 0

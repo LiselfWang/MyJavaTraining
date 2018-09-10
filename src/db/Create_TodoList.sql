@@ -1,0 +1,20 @@
+--DROP TABLE TodoList
+--GO
+CREATE TABLE TodoList (
+	id INT NOT NULL PRIMARY KEY IDENTITY(1,1),
+	name NVARCHAR(50) NOT NULL,
+	detail NVARCHAR(1000) NULL,
+	updateDate DATETIME,
+	updateBy CHAR(25),
+	createDate DATETIME NOT NULL,
+	createBy CHAR(25) NOT NULL
+)
+
+CREATE TABLE Borrowlist(
+ id INT NOT NULL PRIMARY KEY IDENTITY(1,1),
+ Classes CHAR(10) NOT NULL,
+ Borrowbook VARCHAR(50) NOT NULL,
+ Borrowdate DATETIME NOT NULL,
+ Createdate DATETIME,
+ Createby CHAR(10) 
+)
