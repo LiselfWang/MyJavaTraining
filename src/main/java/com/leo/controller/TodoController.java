@@ -6,6 +6,7 @@ import java.util.Iterator;
 
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.leo.model.Pager;
 import com.leo.model.Todo;
+import com.leo.service.TodoService;
 
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -30,6 +32,10 @@ public class TodoController {
 	final String TODO_LIST_TOTAL_PAGE_KEY = "TODO_LIST_TOTAL_PAGE_KEY";
 	final int TODO_PAGE_SIZE = 10;
 
+	
+	@Autowired
+    private TodoService todoService;
+	
 	private ArrayList<Todo> getFakeList() {
 
 		ArrayList<Todo> fakeList = new ArrayList<>();
@@ -59,6 +65,7 @@ public class TodoController {
 
 	@RequestMapping(path = "", method = RequestMethod.GET)
 	public String index(Model model, HttpSession session) {
+		todoService.getAllTodos();
 		return "todo/index";
 	}
 
