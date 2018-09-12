@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.leo.model.Pager;
-import com.leo.model.Todo;
 import com.leo.service.TodoService;
+import com.leo.viewModel.Pager;
+import com.leo.viewModel.Todo;
 
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -37,7 +37,6 @@ public class TodoController {
     private TodoService todoService;
 	
 	private ArrayList<Todo> getFakeList() {
-
 		ArrayList<Todo> fakeList = new ArrayList<>();
 
 		for (int index = 0; index < 100; index++) {

@@ -1,13 +1,12 @@
-package com.leo.model;
+package com.leo.viewModel;
 
 import java.util.ArrayList;
 
-public class QuaryPage<I> {
+public class Pagerlist<B> {
 int totalpage;
 int pagesize = 10;
 int pagenumber;
-int totalcount;
-ArrayList<I> result;
+ArrayList<B> result;
 
 public int getTotalpage() {
 	return totalpage;
@@ -27,16 +26,10 @@ public int getPagenumber() {
 public void setPagenumber(int pagenumber) {
 	this.pagenumber = pagenumber;
 }
-public int getTotalcount() {
-	return totalcount;
-}
-public void setTotalcount(int totalcount) {
-	this.totalcount = totalcount;
-}
-public ArrayList<I> getResult() {
+public ArrayList<B> getResult() {
 	return result;
 }
-public void setResult(ArrayList<I> result) {
+public void setResult(ArrayList<B> result) {
 	this.result = result;
 }
 

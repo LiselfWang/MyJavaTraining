@@ -1,4 +1,4 @@
-package com.leo.model;
+package com.leo.dto;
 
 import java.util.Date;
 

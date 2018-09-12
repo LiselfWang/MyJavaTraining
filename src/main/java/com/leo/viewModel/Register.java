@@ -1,4 +1,4 @@
-package com.leo.model;
+package com.leo.viewModel;
 
 public class Register {
 	String name;

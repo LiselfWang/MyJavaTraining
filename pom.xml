@@ -7,6 +7,20 @@
   <version>0.0.1-SNAPSHOT</version>
   <name>MyMVC Maven Webapp</name>
   <url>http://maven.apache.org</url>
+  <build>
+  	<finalName>MyMVC</finalName>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.3</version>
+        <configuration>
+          <source>1.8</source>
+          <target>1.8</target>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
@@ -111,12 +125,10 @@
 <dependency>
     <groupId>com.microsoft.sqlserver</groupId>
     <artifactId>mssql-jdbc</artifactId>
-    <version>7.1.0.jre8-preview</version>
+    <version>6.4.0.jre8</version>
     <scope>test</scope>
 </dependency>
 
   </dependencies>
-  <build>
-    <finalName>MyMVC</finalName>
-  </build>
+
 </project>

@@ -1,4 +1,4 @@
-<%@page import="com.leo.model.Register"%>
+<%@page import="com.leo.viewModel.Register"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="org.springframework.ui.Model"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"

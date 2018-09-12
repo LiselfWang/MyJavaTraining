@@ -6,9 +6,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.leo.viewModel.Information;
+import com.leo.viewModel.QuaryPage;
+
 import javax.servlet.http.HttpSession;
-import com.leo.model.Information;
-import com.leo.model.QuaryPage;
 
 import java.util.ArrayList;
 

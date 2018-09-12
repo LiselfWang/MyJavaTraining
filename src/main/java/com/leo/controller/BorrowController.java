@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.leo.model.Borrowperson;
-import com.leo.model.Pagerlist;
+import com.leo.viewModel.Borrowperson;
+import com.leo.viewModel.Pagerlist;
 
 @Controller
 @RequestMapping("/borrow")

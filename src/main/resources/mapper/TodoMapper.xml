@@ -3,7 +3,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!--命名空间和接口保持一致-->
 <mapper namespace="com.leo.mapper.TodoMapper">
-    <select id="getAllTodos" resultType="Todo">
+    <select id="getAllTodos" resultType="com.leo.dto.Todo">
         select * from TodoList
     </select>
 </mapper>
