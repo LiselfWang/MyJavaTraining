@@ -1,4 +1,4 @@
-package com.leo.mapper;
+package com.leo.dao;
 
 import java.util.List;
 
@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 import com.leo.dto.Todo;
 
 @Repository
-public interface TodoMapper {
+public interface TodoDao {
 	List<Todo> getAllTodos();
 }

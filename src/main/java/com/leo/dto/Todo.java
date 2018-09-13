@@ -1,36 +1,9 @@
 package com.leo.dto;
 
-import java.util.Date;
-
-public class Todo {
-
-	public Todo() {
-		this.id = java.util.UUID.randomUUID().toString();
-		this.createDate = new Date();
-	}
-
-	private String id;
+public class Todo extends BaseDto {
 	
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
-	
-	private Date createDate;
-
-	public Date getCreateDate() {
-		return createDate;
-	}
-
-	public void setCreateDate(Date createDate) {
-		this.createDate = createDate;
-	}
-
 	private String name;
+	private String detail;
 
 	public String getName() {
 		return name;
@@ -40,8 +13,6 @@ public class Todo {
 		this.name = name;
 	}
 
-	private String detail;
-	
 	public String getDetail() {
 		return detail;
 	}

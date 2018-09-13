@@ -3,6 +3,7 @@ package com.leo.controller;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.leo.service.TodoService;
 import com.leo.viewModel.Pager;
-import com.leo.viewModel.Todo;
+import com.leo.dto.Todo;
 
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -36,35 +37,14 @@ public class TodoController {
 	@Autowired
     private TodoService todoService;
 	
-	private ArrayList<Todo> getFakeList() {
-		ArrayList<Todo> fakeList = new ArrayList<>();
-
-		for (int index = 0; index < 100; index++) {
-
-			Todo fakeTodo = new Todo();
-			fakeTodo.setName("Fake name" + index);
-			fakeTodo.setDetail("Fake detail" + index);
-			fakeList.add(fakeTodo);
-		}
-
-		return fakeList;
-	};
-
-	private ArrayList<Todo> getTodoList(HttpSession session) {
-		Object objTodoList = session.getAttribute(TODO_LIST_SESSION_KEY);
-		if (objTodoList != null) {
-			return (ArrayList<Todo>) objTodoList;
-		} else {
-			ArrayList<Todo> fakeList = getFakeList();
-			session.setAttribute(TODO_LIST_SESSION_KEY, fakeList);
-			return fakeList;
-		}
-
+	private List<Todo> getTodoList() {
+	
+		return todoService.getAllTodos();
 	}
 
 	@RequestMapping(path = "", method = RequestMethod.GET)
 	public String index(Model model, HttpSession session) {
-		todoService.getAllTodos();
+		
 		return "todo/index";
 	}
 
@@ -76,12 +56,12 @@ public class TodoController {
 			pageNumber = 1;
 		}
 
-		ArrayList<Todo> todoList = null;
+		List<Todo> todoList = null;
 		if (name == null || "".equals(name)) {
-			todoList = getTodoList(session);
+			todoList = getTodoList();
 
 		} else {
-			ArrayList<Todo> tempTodoList = getTodoList(session);
+			List<Todo> tempTodoList = getTodoList();
 			todoList = new ArrayList<Todo>();
 
 			for (int i = 0; i < tempTodoList.size(); i++) {
@@ -127,18 +107,18 @@ public class TodoController {
 
 	@RequestMapping(path = "/add", method = RequestMethod.POST)
 	public String Add(Todo todo, HttpSession session) {
-		ArrayList<Todo> todoList = getTodoList(session);
+		List<Todo> todoList = getTodoList();
 		todoList.add(todo);
 		return "redirect:/todo";
 	}
 
 	
 	@RequestMapping(path = "/editPage", method = RequestMethod.GET)
-	public String editPage(String id, Model model,  HttpSession session) {
-		ArrayList<Todo> todoList = getTodoList(session);
+	public String editPage(int id, Model model,  HttpSession session) {
+		List<Todo> todoList = getTodoList();
 		for(int i = 0; i < todoList.size(); i++) {
 			Todo current = todoList.get(i);
-			if(current.getId().equals(id)) {
+			if(current.getId() == id) {
 				model.addAttribute("todo", current);
 				break;
 			}
@@ -149,10 +129,10 @@ public class TodoController {
 	
 	@RequestMapping(path = "/edit", method = RequestMethod.POST)
 	public String edit(Todo todo, Model model,  HttpSession session) {
-		ArrayList<Todo> todoList = getTodoList(session);
+		List<Todo> todoList = getTodoList();
 		for(int i = 0; i < todoList.size(); i++) {
 			Todo current = todoList.get(i);
-			if(current.getId().equals(todo.getId())) {
+			if(current.getId() == todo.getId()) {
 				
 				current.setName(todo.getName());
 				current.setDetail(todo.getDetail());
@@ -167,11 +147,11 @@ public class TodoController {
 	
 	@ResponseBody
 	@RequestMapping(path = "/delete", method = RequestMethod.POST)
-	public Boolean Delete(String id, HttpSession session) {
-		ArrayList<Todo> todoList = getTodoList(session);
+	public Boolean Delete(int id, HttpSession session) {
+		List<Todo> todoList = getTodoList();
 		for (int i = 0; i < todoList.size(); i++) {
 			Todo current = todoList.get(i);
-			if (current.getId().equals(id)) {
+			if (current.getId() == id) {
 				todoList.remove(current);
 			}
 		}

@@ -1,15 +1,20 @@
 package com.leo.controller;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.leo.dto.Todo;
+import com.leo.service.BorrowService;
+import com.leo.service.TodoService;
 import com.leo.viewModel.Borrowperson;
 import com.leo.viewModel.Pagerlist;
 
@@ -18,27 +23,36 @@ import com.leo.viewModel.Pagerlist;
 public class BorrowController {
 	final int pagesize = 10;
 	
-	public ArrayList<Borrowperson> getfakelist(){
-		ArrayList<Borrowperson> fakelist = new ArrayList<Borrowperson>();
-		for (int i = 0; i < 100; i++) {
-			Borrowperson current = new Borrowperson();
-			current.setName("Fakename"+i);
-			current.setClasses("Class"+i);
-			current.setBookname("Book"+i);
-			fakelist.add(current);
-		}
-		return fakelist;
-	}
+//	public ArrayList<Borrowperson> getfakelist(){
+//		ArrayList<Borrowperson> fakelist = new ArrayList<Borrowperson>();
+//		for (int i = 0; i < 100; i++) {
+//			Borrowperson current = new Borrowperson();
+//			current.setName("Fakename"+i);
+//			current.setClasses("Class"+i);
+//			current.setBookname("Book"+i);
+//			fakelist.add(current);
+//		}
+//		return fakelist;
+//	}
+//	
+//	public ArrayList<Borrowperson> getsession(HttpSession session){
+//		Object obj = session.getAttribute("borrow");
+//		if(obj!=null){
+//			return (ArrayList<Borrowperson>) obj; 	
+//		}else{
+//			ArrayList<Borrowperson> fakelist = getfakelist();
+//			session.setAttribute("borrow", fakelist);
+//			return fakelist;
+//		}
+//	}
 	
-	public ArrayList<Borrowperson> getsession(HttpSession session){
-		Object obj = session.getAttribute("borrow");
-		if(obj!=null){
-			return (ArrayList<Borrowperson>) obj; 	
-		}else{
-			ArrayList<Borrowperson> fakelist = getfakelist();
-			session.setAttribute("borrow", fakelist);
-			return fakelist;
-		}
+	
+	@Autowired
+    private BorrowService borrowService;
+	
+	private List<Borrowperson> getborrowlist(){
+	
+		return borrowService.getborrowlist();
 	}
 	
 
@@ -54,11 +68,11 @@ public class BorrowController {
 		if(pagenumber==null || pagenumber==0){
 			pagenumber = 1;
 		}
-		ArrayList<Borrowperson> borrowlist = new ArrayList<Borrowperson>();
+		List<Borrowperson> borrowlist = new ArrayList<Borrowperson>();
 		if(name==null || "".equals(name)) {
-			 borrowlist = getsession(session);
+			 borrowlist = getborrowlist();
 		}else {
-			ArrayList<Borrowperson> tmplist = getsession(session);
+			List<Borrowperson> tmplist = getborrowlist();
 			for (int i = 0; i < tmplist.size(); i++) {
 				Borrowperson current = tmplist.get(i);
 				if(current.getName().indexOf(name)>-1) {
@@ -94,18 +108,18 @@ public class BorrowController {
 	
 	@RequestMapping(path = "/addinfo", method = RequestMethod.POST)
 	public String addinfo(Borrowperson borrowone,HttpSession session) {
-		ArrayList<Borrowperson> borrowlist = getsession(session);
+		List<Borrowperson> borrowlist = getborrowlist();
 		borrowlist.add(borrowone);
 		session.setAttribute("borrow", borrowlist);
 		return "redirect:/borrow";
 	}
 	
 	@RequestMapping(path = "/editpage", method = RequestMethod.GET)
-	public String editpage(String id, Model model, HttpSession session) {
-		ArrayList<Borrowperson> borrowlist = getsession(session);
+	public String editpage(int id, Model model, HttpSession session) {
+		List<Borrowperson> borrowlist = getborrowlist();
 		for (int i = 0; i < borrowlist.size(); i++) {
 			Borrowperson editone = borrowlist.get(i);
-			if(editone.getId().equals(id)) {
+			if(editone.getId()==id) {
 				model.addAttribute("editone", editone);
 				break;
 			}
@@ -115,10 +129,10 @@ public class BorrowController {
 	
 	@RequestMapping(path = "/editinfo", method = RequestMethod.POST)
 	public String editinfo(Borrowperson borrowone, Model model, HttpSession session) {
-		ArrayList<Borrowperson> borrowlist = getsession(session);
+		List<Borrowperson> borrowlist = getborrowlist();
 		for (int i = 0; i < borrowlist.size(); i++) {
 			Borrowperson editone = borrowlist.get(i);
-			if(editone.getId().equals(borrowone.getId())) {
+			if(editone.getId()==borrowone.getId()) {
 				editone.setName(borrowone.getName());
 				editone.setClasses(borrowone.getClasses());
 				editone.setBookname(borrowone.getBookname());
@@ -130,11 +144,11 @@ public class BorrowController {
 	
 	@ResponseBody
 	@RequestMapping(path = "/delete", method = RequestMethod.POST)
-	public Boolean delete(String id, Model model, HttpSession session) {
-		ArrayList<Borrowperson> borrowlist = getsession(session);
+	public Boolean delete(int id, Model model, HttpSession session) {
+		List<Borrowperson> borrowlist = getborrowlist();
 		for (int i = 0; i < borrowlist.size(); i++) {
 			Borrowperson deletetone = borrowlist.get(i);
-			if(deletetone.getId().equals(id)) {
+			if(deletetone.getId()==id) {
 				borrowlist.remove(deletetone);
 				break;
 			}

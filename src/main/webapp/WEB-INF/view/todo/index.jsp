@@ -40,7 +40,6 @@
 					name: $("#hidName").val(),
 					pageNumber: $("#pageNumber").val()
 					}, function(data){
-						debugger
 						for(var i = 0; i< data.result.length; i++){
 							var currentTodo = data.result[i];
 							var currentDate = new Date(currentTodo.createDate)
