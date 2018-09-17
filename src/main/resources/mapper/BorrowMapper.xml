@@ -1,9 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        
 <!--命名空间和接口保持一致-->
 <mapper namespace="com.leo.dao.BorrowDao">
+<sql id="allColumns">
+		name,classes,bookname,borrowdate,createBy,updateDate,updateBy
+	</sql>
+	
+<sql id="queryConditions">
+		name like CONCAT('%','a','%') or bookname like CONCAT('%','a','%')
+	</sql>	
+	
     <select id="getborrowlist" resultType="com.leo.dto.Borrow">
-        select * from borrowlist;
+    select name,classes,bookname,borrowdate,createBy,updateDate,updateBy from (
+        select name,classes,bookname,borrowdate,createBy,updateDate,updateBy,
+        ROW_NUMBER() OVER (order by id) as rowId
+        from borrowlist where name like CONCAT('%','a','%') or bookname like CONCAT('%','a','%') ) as T 
+    where T.rowId < 5 *(1-1) and T.rowId >= 5 * 1;
     </select>
+    
+    
+       <select id="getborrowCount" resultType = "int">
+    select count(1) from(
+        select <include refid="allColumns" />
+        from borrowlist where <include refid="queryConditions" />) as T 
+    </select>
+    
+     <select id="editBorrowItem" resultType="com.leo.dto.Borrow" parameterType="int">
+       select <include refid="allColumns" /> from borrowlist where id = #{id};
+    </select>
+    
+     <delete id="deleteBorrowItem" parameterType="int">
+       delete from borrowlist where id = #{id};
+    </delete>
+    
+      <insert id="addBorrowItem" parameterType="com.leo.dto.Borrow" useGeneratedKeys="true" keyProperty="id">
+      insert borrowlist(name,classes,bookname,borrowdate,updateDate) values (#{name},#{classes},#{bookname},GETDATE(),GETDATE());
+    </insert>
+    
+     <update id="updateBorrowItem" parameterType="com.leo.dto.Borrow">
+      update borrowlist set
+      name = #{name},
+      classes = #{classes},
+      bookname = #{bookname}
+      where id = #{id};
+    </update>
+    
 </mapper>

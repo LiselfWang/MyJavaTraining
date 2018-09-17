@@ -3,7 +3,48 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!--命名空间和接口保持一致-->
 <mapper namespace="com.leo.dao.TodoDao">
+	<sql id="allFields">
+		id,name,detail,updateDate,updateBy,createDate,createBy
+	</sql>
+	
+	<sql id="queryConditions">
+		name like CONCAT('%',#{keywords},'%')
+        or detail like CONCAT('%',#{keywords},'%')
+	</sql>
+	
     <select id="getAllTodos" resultType="com.leo.dto.Todo">
-        select * from TodoList
+        SELECT * FROM
+        (select
+        	<include refid="allFields" />,
+        	ROW_NUMBER() OVER(Order by id) AS RowId
+         from TodoList where
+         	<include refid="queryConditions" />
+         ) T
+         WHERE T.RowId &gt; #{pageSize} * (#{pageIndex} - 1) AND T.RowId &lt;= #{pageSize} * #{pageIndex}
     </select>
+    
+    <select id="getAllTodosCount" resultType="int">
+        select
+        	COUNT(1)
+         from TodoList where
+         	<include refid="queryConditions" />
+    </select>
+   
+    <select id="getTodo" resultType="com.leo.dto.Todo" parameterType="int">
+        select <include refid="allFields" /> from TodoList where id = #{id}
+    </select>
+    
+    <insert id="addTodo" useGeneratedKeys="true" keyProperty="id" parameterType="com.leo.dto.Todo" >
+    	insert TodoList(name,detail,createDate,createBy) values (#{name},#{detail},GETDATE(),'SYSTEM')
+    </insert>
+    
+    <update id="updateTodo" parameterType="com.leo.dto.Todo" >
+    	update TodoList set
+    		name = #{name},
+    		detail = #{detail},
+    		updateDate = GETDATE(),
+    		updateBy = 'SYSTEM'
+    	where id  = #{id}
+    		
+    </update>
 </mapper>

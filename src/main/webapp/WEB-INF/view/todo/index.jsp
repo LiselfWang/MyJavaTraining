@@ -37,8 +37,8 @@
 			function getTodoList(){
 				
 				$.getJSON("/todo/getList", {
-					name: $("#hidName").val(),
-					pageNumber: $("#pageNumber").val()
+					keywords: $("#hidName").val(),
+					pageIndex: $("#pageNumber").val()
 					}, function(data){
 						for(var i = 0; i< data.result.length; i++){
 							var currentTodo = data.result[i];

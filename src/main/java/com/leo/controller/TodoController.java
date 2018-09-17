@@ -31,17 +31,12 @@ public class TodoController {
 	final String QUERY_NAME_MODEL_KEY = "QUERY_NAME_MODEL_KEY";
 	final String QUERY_PAGE_NUMBER_MODEL_KEY = "QUERY_PAGE_NUMBER_MODEL_KEY";
 	final String TODO_LIST_TOTAL_PAGE_KEY = "TODO_LIST_TOTAL_PAGE_KEY";
-	final int TODO_PAGE_SIZE = 10;
+	final int TODO_PAGE_SIZE = 5;
 
 	
 	@Autowired
     private TodoService todoService;
 	
-	private List<Todo> getTodoList() {
-	
-		return todoService.getAllTodos();
-	}
-
 	@RequestMapping(path = "", method = RequestMethod.GET)
 	public String index(Model model, HttpSession session) {
 		
@@ -50,54 +45,14 @@ public class TodoController {
 
 	@ResponseBody
 	@RequestMapping(path = "getList", method = RequestMethod.GET)
-	public Pager getList(String name, Integer pageNumber, Model model, HttpSession session) {
+	public Pager<Todo> getList(String keywords, Integer pageIndex, Model model, HttpSession session) {
 
-		if (pageNumber == null || pageNumber == 0) {
-			pageNumber = 1;
+		if (pageIndex == null || pageIndex == 0) {
+			pageIndex = 1;
 		}
 
-		List<Todo> todoList = null;
-		if (name == null || "".equals(name)) {
-			todoList = getTodoList();
-
-		} else {
-			List<Todo> tempTodoList = getTodoList();
-			todoList = new ArrayList<Todo>();
-
-			for (int i = 0; i < tempTodoList.size(); i++) {
-				Todo current = tempTodoList.get(i);
-
-				if (current.getName().indexOf(name) > -1) {
-					todoList.add(current);
-				}
-			}
-
-			// 通过name来筛选
-		}
-
-		ArrayList<Object> finalResult = new ArrayList<Object>();
-		for (int q = 0; q < todoList.size(); q++) {
-			if (q >= (TODO_PAGE_SIZE * (pageNumber - 1)) && q < (TODO_PAGE_SIZE * (pageNumber))) {
-				finalResult.add((Object)todoList.get(q));
-			}
-		}
-
-		int totalPage = todoList.size() / TODO_PAGE_SIZE;
-
-		if (todoList.size() % TODO_PAGE_SIZE != 0) {
-			totalPage++;
-		}
+		return todoService.getAllTodos(keywords, TODO_PAGE_SIZE, pageIndex);
 		
-		Pager resultPager = new Pager();
-		resultPager.setPageSize(TODO_PAGE_SIZE);
-		resultPager.setTotalCount(todoList.size());
-		resultPager.setResult(finalResult);
-		resultPager.setCurrentPage(pageNumber);
-		resultPager.setTotalPage(totalPage);
-		
-		
-		
-		return resultPager;
 	}
 
 	@RequestMapping(path = "/addPage", method = RequestMethod.GET)
@@ -107,40 +62,23 @@ public class TodoController {
 
 	@RequestMapping(path = "/add", method = RequestMethod.POST)
 	public String Add(Todo todo, HttpSession session) {
-		List<Todo> todoList = getTodoList();
-		todoList.add(todo);
+		System.out.println(todo.getId());
+		todoService.addTodo(todo);
+		System.out.println(todo.getId());
 		return "redirect:/todo";
 	}
 
 	
 	@RequestMapping(path = "/editPage", method = RequestMethod.GET)
 	public String editPage(int id, Model model,  HttpSession session) {
-		List<Todo> todoList = getTodoList();
-		for(int i = 0; i < todoList.size(); i++) {
-			Todo current = todoList.get(i);
-			if(current.getId() == id) {
-				model.addAttribute("todo", current);
-				break;
-			}
-		}
-		
+		Todo current = todoService.getTodo(id);
+		model.addAttribute("todo", current);
 		return "todo/edit";
 	}
 	
 	@RequestMapping(path = "/edit", method = RequestMethod.POST)
 	public String edit(Todo todo, Model model,  HttpSession session) {
-		List<Todo> todoList = getTodoList();
-		for(int i = 0; i < todoList.size(); i++) {
-			Todo current = todoList.get(i);
-			if(current.getId() == todo.getId()) {
-				
-				current.setName(todo.getName());
-				current.setDetail(todo.getDetail());
-				
-				break;
-			}
-		}
-		
+		todoService.updateTodo(todo);
 		
 		return "redirect:/todo";
 	}
@@ -148,13 +86,13 @@ public class TodoController {
 	@ResponseBody
 	@RequestMapping(path = "/delete", method = RequestMethod.POST)
 	public Boolean Delete(int id, HttpSession session) {
-		List<Todo> todoList = getTodoList();
-		for (int i = 0; i < todoList.size(); i++) {
-			Todo current = todoList.get(i);
-			if (current.getId() == id) {
-				todoList.remove(current);
-			}
-		}
+//		List<Todo> todoList = getTodoList();
+//		for (int i = 0; i < todoList.size(); i++) {
+//			Todo current = todoList.get(i);
+//			if (current.getId() == id) {
+//				todoList.remove(current);
+//			}
+//		}
 
 		return true;
 	}

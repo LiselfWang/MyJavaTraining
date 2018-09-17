@@ -40,7 +40,7 @@ margin:5px;
 $(function(){
 	getborrowlist();
 	function getborrowlist(){
-		$.getJSON("/borrow/getborrowlist",{"pagenumber":$("#pagenumber").val(),"name":$("#hiddenname").val()},
+		$.getJSON("/borrow/getborrowlist",{"pagenumber":$("#pagenumber").val(),"keywords":$("#hiddenname").val()},
 			function(data){
 			for (var i = 0; i < data.result.length; i++) {
 				var current = data.result[i];
@@ -104,7 +104,7 @@ $(function(){
 <body>
 <fieldset>
 <legend><b>Borrow Book Record</b></legend>
-<input type="text" id="queryname" placeholder="please input your name">
+<input type="text" id="queryname" placeholder="please input keywords">
 <input type="hidden" id="hiddenname" name="name" value="">
 <input type="button" id="query" value="Query">
 <input type="button" id="addbut" value="Add Record"><br>

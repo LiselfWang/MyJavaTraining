@@ -1,9 +1,17 @@
 package com.leo.service;
 
-import java.util.List;
+import com.leo.dto.Borrow;
+import com.leo.viewModel.Pagerlist;
 
-import com.leo.viewModel.Borrowperson;
-
-public interface BorrowService {
-	 List<Borrowperson> getborrowlist();
+public interface BorrowService{
+	
+	 Pagerlist<Borrow> getborrowlist(String keywords,int pagenumber,int pagesize);
+	 
+	 Borrow editBorrowItem(int id);
+	 
+	 void deleteBorrowItem(int id);
+	 
+	 void addBorrowItem(Borrow borrow);
+	 
+	 void updateBorrowItem(Borrow borrow);
 }

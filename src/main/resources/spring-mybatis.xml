@@ -6,11 +6,13 @@
     <!-- 实体类,简称 -设置别名 -->
     <typeAliases>
         <typeAlias alias="Todo" type="com.leo.dto.Todo" />
+        <typeAlias alias="Borrow" type="com.leo.dto.Borrow" />
     </typeAliases>
 
 
     <mappers>
         <mapper resource="mapper/TodoMapper.xml" />
+        <mapper resource="mapper/BorrowMapper.xml" />
     </mappers>
 
 </configuration>

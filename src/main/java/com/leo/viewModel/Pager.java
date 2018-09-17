@@ -1,14 +1,15 @@
 package com.leo.viewModel;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class Pager {
+public class Pager<T> {
 
 	private int pageSize = 10;
 	private int totalCount = 0;
 	private int totalPage = 0;
 	private int currentPage = 1;
-	private ArrayList<Object> result;
+	private List<T> result;
 	
 	public int getPageSize() {
 		return pageSize;
@@ -44,11 +45,11 @@ public class Pager {
 	}
 
 	
-	public ArrayList<Object> getResult() {
+	public List<T> getResult() {
 		return result;
 	}
 
-	public void setResult(ArrayList<Object> result) {
+	public void setResult(List<T> result) {
 		this.result = result;
 	}
 

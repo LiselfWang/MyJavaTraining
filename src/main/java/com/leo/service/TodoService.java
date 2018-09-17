@@ -1,10 +1,15 @@
 package com.leo.service;
 
-import java.util.List;
-
 import com.leo.dto.Todo;
+import com.leo.viewModel.Pager;
 
 
 public interface TodoService {
-    List<Todo> getAllTodos();
+	Pager<Todo> getAllTodos(String keywords, int pageSize, int pageIndex);
+    
+    Todo getTodo(int id);
+    
+    void addTodo(Todo dodo);
+    
+	void updateTodo(Todo todo);
 }
