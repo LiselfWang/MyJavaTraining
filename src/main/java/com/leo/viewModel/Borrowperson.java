@@ -12,6 +12,8 @@ String id;
 public Borrowperson(){
 	this.id = java.util.UUID.randomUUID().toString();
 	this.borrowdate = new Date();
+	
+	Borrowperson a = new Borrowperson();
 }
 
 public String getName() {

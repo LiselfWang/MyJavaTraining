@@ -9,15 +9,15 @@
 	</sql>
 	
 <sql id="queryConditions">
-		name like CONCAT('%','a','%') or bookname like CONCAT('%','a','%')
+		name like CONCAT('%',#{keywords},'%') or bookname like CONCAT('%',#{keywords},'%')
 	</sql>	
 	
     <select id="getborrowlist" resultType="com.leo.dto.Borrow">
-    select name,classes,bookname,borrowdate,createBy,updateDate,updateBy from (
-        select name,classes,bookname,borrowdate,createBy,updateDate,updateBy,
+    select <include refid="allColumns" /> from(
+        select <include refid="allColumns" />,
         ROW_NUMBER() OVER (order by id) as rowId
-        from borrowlist where name like CONCAT('%','a','%') or bookname like CONCAT('%','a','%') ) as T 
-    where T.rowId < 5 *(1-1) and T.rowId >= 5 * 1;
+        from borrowlist where <include refid="queryConditions" /> ) as T 
+    where T.rowId &gt; #{pagesize}*(#{pagenumber}-1) and T.rowId &lt;= #{pagesize} * #{pagenumber};
     </select>
     
     

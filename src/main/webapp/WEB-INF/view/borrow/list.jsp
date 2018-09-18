@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -37,24 +36,41 @@ margin:5px;
 
 <script>
 
+//document load finished
 $(function(){
+
 	getborrowlist();
 	function getborrowlist(){
-		$.getJSON("/borrow/getborrowlist",{"pagenumber":$("#pagenumber").val(),"keywords":$("#hiddenname").val()},
+		$.getJSON(
+			"/borrow/getborrowlist",
+			{
+				"pagenumber":$("#pagenumber").val(),
+				"keywords":$("#hiddenname").val()
+			},
 			function(data){
-			for (var i = 0; i < data.result.length; i++) {
-				var current = data.result[i];
-				var currentdate = new Date(current.borrowdate);
-				current.standarddate = currentdate.getFullYear()+"/"+(currentdate.getMonth()+1)+"/"+currentdate.getDate();	
-			}
-		
-			var tmp = $("#template").html();
-			var realdata = Mustache.render(tmp,{"borrowlist": data.result});
-			$("#record").html(realdata);
-			$("#currentPage").html(data.pagenumber+"/"+data.totalpage);
-			$("#prepage").attr("disabled",data.pagenumber<=1);
-			$("#nextpage").attr("disabled",data.pagenumber>=data.totalpage);
-		})
+				for (var i = 0; i < data.result.length; i++) {
+					var current = data.result[i];
+					var currentdate = new Date(current.borrowdate);
+					current.standarddate = currentdate.getFullYear()+"/"+(currentdate.getMonth()+1)+"/"+currentdate.getDate();	
+				}
+			
+				
+				var a ={
+						age:33,
+						name:"Leo"
+				}
+
+				
+				var tmp = $("#template").html();
+				var realdata = Mustache.render(tmp,
+						{
+							"borrowlist": data.result
+						});
+				$("#record").html();
+				$("#currentPage").html(data.pagenumber+"/"+data.totalpage);
+				$("#prepage").attr("disabled",data.pagenumber<=1);
+				$("#nextpage").attr("disabled",data.pagenumber>=data.totalpage);
+			})
 	}
 		
 	$("#query").click(function(){
@@ -101,7 +117,7 @@ $(function(){
 })
 </script>
 </head>
-<body>
+<body onload="load()">
 <fieldset>
 <legend><b>Borrow Book Record</b></legend>
 <input type="text" id="queryname" placeholder="please input keywords">
@@ -143,6 +159,5 @@ $(function(){
 </li>
 {{/borrowlist}}
 </script>
-
 </body>
 </html>
