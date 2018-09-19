@@ -7,7 +7,7 @@ public interface BorrowService{
 	
 	 Pagerlist<Borrow> getborrowlist(String keywords,int pagenumber,int pagesize);
 	 
-	 Borrow editBorrowItem(int id);
+	 Borrow getBorrowItem(int id);
 	 
 	 void deleteBorrowItem(int id);
 	 

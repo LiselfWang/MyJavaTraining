@@ -79,7 +79,7 @@ public class BorrowController {
 	
 	@RequestMapping(path = "/editpage", method = RequestMethod.GET)
 	public String editpage(int id, Model model, HttpSession session) {
-			Borrow editone = borrowService.editBorrowItem(id);
+			Borrow editone = borrowService.getBorrowItem(id);
 			model.addAttribute("editone", editone);	
 		return "borrow/editpage";
 	}

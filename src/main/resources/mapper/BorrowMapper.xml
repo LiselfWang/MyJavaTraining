@@ -27,7 +27,7 @@
         from borrowlist where <include refid="queryConditions" />) as T 
     </select>
     
-     <select id="editBorrowItem" resultType="com.leo.dto.Borrow" parameterType="int">
+     <select id="getBorrowItem" resultType="com.leo.dto.Borrow" parameterType="int">
        select <include refid="allColumns" /> from borrowlist where id = #{id};
     </select>
     

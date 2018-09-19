@@ -19,8 +19,8 @@ public class BorrowServiceImpl implements BorrowService{
 	    
 	    
 	    @Override
-	    public Borrow editBorrowItem(int id) {
-	        return borrowDao.editBorrowItem(id);
+	    public Borrow getBorrowItem(int id) {
+	        return borrowDao.getBorrowItem(id);
 	    }
 	    
 	    @Override

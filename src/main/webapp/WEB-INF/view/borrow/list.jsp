@@ -53,20 +53,13 @@ $(function(){
 					var currentdate = new Date(current.borrowdate);
 					current.standarddate = currentdate.getFullYear()+"/"+(currentdate.getMonth()+1)+"/"+currentdate.getDate();	
 				}
-			
-				
-				var a ={
-						age:33,
-						name:"Leo"
-				}
-
-				
+					
 				var tmp = $("#template").html();
 				var realdata = Mustache.render(tmp,
 						{
 							"borrowlist": data.result
 						});
-				$("#record").html();
+				$("#record").html(realdata);
 				$("#currentPage").html(data.pagenumber+"/"+data.totalpage);
 				$("#prepage").attr("disabled",data.pagenumber<=1);
 				$("#nextpage").attr("disabled",data.pagenumber>=data.totalpage);
@@ -98,12 +91,12 @@ $(function(){
 		window.location = "/borrow/addpage";
 	})
 	
-	$("#record").on("click", "#editbut", function(){
+	$("#record").on("click", ".editbut", function(){
 		var currentid = $(this).data("id");
 		window.location = "/borrow/editpage?id="+currentid;
 	})
 	
-	$("#record").on("click", "#delbut", function(){
+	$("#record").on("click", ".delbut", function(){
 		var currentid = $(this).data("id");
 		$.post("/borrow/delete",{"id":currentid}, function(result){
 			if(result){
@@ -117,7 +110,7 @@ $(function(){
 })
 </script>
 </head>
-<body onload="load()">
+<body>
 <fieldset>
 <legend><b>Borrow Book Record</b></legend>
 <input type="text" id="queryname" placeholder="please input keywords">
@@ -153,8 +146,8 @@ $(function(){
 <span class="item">{{bookname}}</span>
 <span class="item">{{standarddate}}</span>
 <span class="item">
-<input type="button" id="delbut" class="button" data-id="{{id}}" value="Delete">
-<input type="button" id="editbut" class="button" data-id="{{id}}" value="Edit">
+<input type="button" class="delbut" class="button" data-id="{{id}}" value="Delete">
+<input type="button" class="editbut" class="button" data-id="{{id}}" value="Edit">
 <span>
 </li>
 {{/borrowlist}}
