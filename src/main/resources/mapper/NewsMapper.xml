@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        
+<!--命名空间和接口保持一致-->
+<mapper namespace="com.leo.dao.NewsDao">
+<sql id="allColumns">
+		id,title,content,createDate,publishDate,status
+</sql>
+<sql id="queryCondition">
+		title like CONCAT('%',#{keywords},'%') or content like CONCAT('%',#{keywords},'%')
+</sql>
+
+<select id="getNewsList" resultType="com.leo.dto.NewsDto">
+    select top 5 <include refid="allColumns"/> from(
+        select <include refid="allColumns"/>,
+        ROW_NUMBER() OVER (order by id) as rowId
+        from newsLists) as T;
+    </select>
+    
+  <select id="getNewsDetail" resultType="com.leo.dto.NewsDto" parameterType="int">
+    select <include refid="allColumns"/> from newsLists where id = #{id};
+    </select>  
+    
+    
+    <select id="getNewsitems" resultType="com.leo.dto.NewsDto">
+    select <include refid="allColumns"/> from(
+        select <include refid="allColumns"/>,
+        ROW_NUMBER() OVER (order by id) as rowId
+        from newsLists where <include refid="queryCondition"/>) as T where T.rowId &gt;#{pageSize}*(#{pageIndex}-1) and T.rowId &lt;= #{pageSize}*#{pageIndex};
+    </select>
+    
+    <select id="getNewsCount" resultType="int" parameterType="String">
+    select count(1) from newsLists where <include refid="queryCondition"/>;
+    </select>
+    
+</mapper>
