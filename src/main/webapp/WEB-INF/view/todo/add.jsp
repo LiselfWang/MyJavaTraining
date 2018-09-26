@@ -10,6 +10,7 @@
 	<form action="/todo/add" method="post">
 		name: <input type="text" name="name" /> <br>
 		detail: <input type="text" name="detail" /> <br>
+		fool: <input type="checkbox" name="fool" value="123" /> <br>
 		<input type="submit" value="Add" />
 	</form>
 </fieldset>

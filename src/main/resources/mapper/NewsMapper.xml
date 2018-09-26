@@ -34,4 +34,12 @@
     select count(1) from newsLists where <include refid="queryCondition"/>;
     </select>
     
+    <insert id="getAddInfo" parameterType="com.leo.dto.NewsDto" useGeneratedKeys="true" keyProperty="id">
+      insert newsLists(title,content,publishDate,status) values (#{title},#{content},#{publishDate},#{status});
+    </insert>
+    
+    <delete id="deleteItems" parameterType="int">
+    delete from newsLists where id = #{id};
+    </delete>
+    
 </mapper>

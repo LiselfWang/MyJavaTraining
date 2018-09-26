@@ -8,7 +8,7 @@ private String title;
 private String content;
 private Date createDate;
 private Date publishDate;
-boolean status;
+String status;
 
 public int getId() {
 	return id;
@@ -41,10 +41,10 @@ public Date getPublishDate() {
 public void setPublishDate(Date publishDate) {
 	this.publishDate = publishDate;
 }
-public boolean isStatus() {
+public String getStatus() {
 	return status;
 }
-public void setStatus(boolean status) {
+public void setStatus(String status) {
 	this.status = status;
 }
 

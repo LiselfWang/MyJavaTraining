@@ -13,6 +13,7 @@
 <input type="text" name="name" placeholder="please input your name">
 <input type="text" name="age" placeholder="please input your age">
 <input type="text" name="destination" placeholder="please input your destination" >
+<input type="checkbox" name="test" > 是傻瓜
 <input type="submit" value="提交">
 </form>
 </fieldset>

@@ -13,4 +13,6 @@ public interface NewsDao {
 	NewsDto getNewsDetail(int id);
 	List<NewsDto> getNewsitems(@Param("pageIndex")int pageIndex,@Param("keywords")String keywords,@Param("pageSize")int pageSize);
 	int getNewsCount(String keywords);
+	void getAddInfo(NewsDto addsone);
+	void deleteItems(int id);
 }

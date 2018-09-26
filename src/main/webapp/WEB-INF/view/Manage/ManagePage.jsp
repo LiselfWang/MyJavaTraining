@@ -81,7 +81,7 @@ $(function(){
 	getNewsitems();
 	function getNewsitems(){
 		$.getJSON(
-				"/manage/getNewsitems",
+				"/manage/getNewsItems",
 				{"pageIndex":$("#pageIndex").val(),
 			     "keywords":$("#hiddenkeywords").val()},
 				function(data){
@@ -117,6 +117,25 @@ $(function(){
 		getNewsitems();
 	})
 	
+	$("#add").click(function(){
+		window.location = "/manage/getAddPage";
+	})
+	
+	$("#newsList").on("click",".delbtn",function(){
+		var currentid = $(this).data("key");
+		$.post("/manage/deleteItems",
+				{"id":currentid},
+				function(result){
+					if(result){
+						getNewsitems();
+					}else{
+						alert("failed");
+					}
+				})
+	   })
+	   
+	   
+	
 	});
 </script>
 </head>
@@ -144,7 +163,7 @@ $(function(){
 <span class="title">{{title}}</span>
 <span class="date">{{standarddate}}</span>
 <span>
-<input type="button" class="addbtn" data-key="{{id}}" value="编辑"></input>
+<input type="button" class="editbtn" data-key="{{id}}" value="编辑"></input>
 <input type="button" class="delbtn" data-key="{{id}}" value="删除"></input>
 </span>
 </li>
