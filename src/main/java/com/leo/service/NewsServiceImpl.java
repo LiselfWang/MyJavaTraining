@@ -65,4 +65,14 @@ public class NewsServiceImpl implements NewsService {
 	public void deleteItems(int id) {
 		newsDao.deleteItems(id);
 	}
+	
+	@Override
+	public NewsDto editPage(int id) {
+		return newsDao.editPage(id);
+	}
+	
+	@Override
+	public void getEditInfo(NewsDto editone) {
+		newsDao.getEditInfo(editone);
+	}
 }

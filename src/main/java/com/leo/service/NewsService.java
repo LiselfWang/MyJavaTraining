@@ -11,4 +11,6 @@ public interface NewsService {
 	Pagerlist<NewsDto> getNewsitems(int pageIndex,String keywords,int pageSize);
 	void getAddInfo(NewsDto addsone);
 	void deleteItems(int id);
+	NewsDto editPage(int id);
+	void getEditInfo(NewsDto editone);
 }

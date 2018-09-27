@@ -55,4 +55,18 @@ public class ManageController{
 		newsService.deleteItems(id);
 		return true;	
 }
+	
+	@RequestMapping(path = "/editPage", method = RequestMethod.GET)
+	public String editPage(Integer id,HttpSession session,Model model) {
+		NewsDto editone = newsService.editPage(id);
+		model.addAttribute("editone",editone);
+		return "Manage/EditPage";
+	
+	}
+	
+	@RequestMapping(path = "/getEditInfo", method = RequestMethod.POST)
+	public String getEditInfo(NewsDto editone,HttpSession session) {
+		newsService.getEditInfo(editone);
+		return "redirect:/manage";
+	}
 }

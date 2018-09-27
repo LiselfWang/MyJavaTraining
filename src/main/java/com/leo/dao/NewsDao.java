@@ -15,4 +15,6 @@ public interface NewsDao {
 	int getNewsCount(String keywords);
 	void getAddInfo(NewsDto addsone);
 	void deleteItems(int id);
+	NewsDto editPage(int id);
+	void getEditInfo(NewsDto editone);
 }

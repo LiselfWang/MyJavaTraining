@@ -2,11 +2,15 @@ package com.leo.dto;
 
 import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 public class NewsDto {
 private int id;
 private String title;
 private String content;
 private Date createDate;
+
+@DateTimeFormat(pattern = "yyyy/MM/dd HH:mm:ss")  
 private Date publishDate;
 String status;
 

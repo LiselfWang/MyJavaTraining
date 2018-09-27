@@ -42,4 +42,16 @@
     delete from newsLists where id = #{id};
     </delete>
     
+    <select id="editPage" resultType="com.leo.dto.NewsDto" parameterType="int">
+    select <include refid="allColumns"/> from newsLists where id = #{id};
+    </select>
+    
+     <update id="getEditInfo" parameterType="com.leo.dto.NewsDto">
+    update newsLists set
+    title= #{title},
+    content = #{content},
+    publishDate = #{publishDate}
+    where id = #{id};
+    </update>
+    
 </mapper>
