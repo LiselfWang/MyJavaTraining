@@ -31,7 +31,7 @@ public class TodoController {
 	final String QUERY_NAME_MODEL_KEY = "QUERY_NAME_MODEL_KEY";
 	final String QUERY_PAGE_NUMBER_MODEL_KEY = "QUERY_PAGE_NUMBER_MODEL_KEY";
 	final String TODO_LIST_TOTAL_PAGE_KEY = "TODO_LIST_TOTAL_PAGE_KEY";
-	final int TODO_PAGE_SIZE = 5;
+	final int TODO_PAGE_SIZE = 3;
 
 	
 	@Autowired
