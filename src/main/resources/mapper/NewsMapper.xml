@@ -11,11 +11,20 @@
 		title like CONCAT('%',#{keywords},'%') or content like CONCAT('%',#{keywords},'%')
 </sql>
 
+<sql id="selectCondition">
+		(title like CONCAT('%',#{keywords},'%') or content like CONCAT('%',#{keywords},'%')) and status = 'Y'
+</sql>
+
 <select id="getNewsList" resultType="com.leo.dto.NewsDto">
     select top 5 <include refid="allColumns"/> from(
         select <include refid="allColumns"/>,
         ROW_NUMBER() OVER (order by id) as rowId
         from newsLists) as T;
+    </select>
+    
+ 
+    <select id="getNewsShow" resultType="com.leo.dto.NewsDto">
+    select top 5 <include refid="allColumns"/> from newsLists where status = 'Y';
     </select>
     
   <select id="getNewsDetail" resultType="com.leo.dto.NewsDto" parameterType="int">
@@ -30,12 +39,23 @@
         from newsLists where <include refid="queryCondition"/>) as T where T.rowId &gt;#{pageSize}*(#{pageIndex}-1) and T.rowId &lt;= #{pageSize}*#{pageIndex};
     </select>
     
+       <select id="getShowitems" resultType="com.leo.dto.NewsDto">
+    select <include refid="allColumns"/> from(
+        select <include refid="allColumns"/>,
+        ROW_NUMBER() OVER (order by id) as rowId
+        from newsLists where <include refid="selectCondition"/>) as T where T.rowId &gt;#{pageSize}*(#{pageIndex}-1) and T.rowId &lt;= #{pageSize}*#{pageIndex};
+    </select>
+    
     <select id="getNewsCount" resultType="int" parameterType="String">
     select count(1) from newsLists where <include refid="queryCondition"/>;
     </select>
     
+     <select id="getShowNewsCount" resultType="int" parameterType="String">
+    select count(1) from newsLists where <include refid="selectCondition"/>;
+    </select>
+    
     <insert id="getAddInfo" parameterType="com.leo.dto.NewsDto" useGeneratedKeys="true" keyProperty="id">
-      insert newsLists(title,content,publishDate,status) values (#{title},#{content},#{publishDate},#{status});
+      insert newsLists(title,content,createDate,publishDate,status) values (#{title},#{content},GETDATE(),#{publishDate},#{status});
     </insert>
     
     <delete id="deleteItems" parameterType="int">
@@ -50,6 +70,7 @@
     update newsLists set
     title= #{title},
     content = #{content},
+    createDate= GETDATE(),
     publishDate = #{publishDate}
     where id = #{id};
     </update>

@@ -31,8 +31,8 @@ public class NewsController {
 	
 	@ResponseBody
 	@RequestMapping(path = "/getNewsList", method = RequestMethod.GET)
-	public Pagerlist<NewsDto> getNewsList(HttpSession session) {
-		return newsService.getNewsList();
+	public Pagerlist<NewsDto> getNewsShow(HttpSession session) {
+		return newsService.getNewsShow();
 		
 }
 	
@@ -54,10 +54,10 @@ public class NewsController {
 	
 	@ResponseBody
 	@RequestMapping(path = "/getNewsitems", method = RequestMethod.GET)
-	public Pagerlist<NewsDto> getNewsitems(Integer pageIndex,String keywords,HttpSession session) {
+	public Pagerlist<NewsDto> getShowitems(Integer pageIndex,String keywords,HttpSession session) {
 		if(pageIndex == null||pageIndex ==0) {
 			pageIndex=1;
 		}
-		return newsService.getNewsitems(pageIndex,keywords,pageSize);	
+		return newsService.getShowitems(pageIndex,keywords,pageSize);	
 }
 }

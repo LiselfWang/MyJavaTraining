@@ -5,10 +5,10 @@
 <head>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 
-	<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-	<script src="https://cdn.bootcss.com/mustache.js/2.3.0/mustache.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/2.3.0/mustache.js"></script>
 </head>
 <body>
 
@@ -44,13 +44,15 @@
 				<col style="width:200px;"/>
 				<col />
 				<col style="width:200px;"/>
+				<col style="width:100px;"/>
 				<col style="width:200px;"/>
 			</colgroup>
 			  <thead>
 			    <tr>
 			      <th scope="col">Name</th>
 			      <th scope="col">Detail</th>
-			      <th scope="col">Create Date</th>
+			      <th scope="col">Log Date</th>
+			      <th scope="col">Is finish</th>
 			      <th scope="col">Action</th>
 			    </tr>
 			  </thead>
@@ -109,6 +111,7 @@
 	<th scope="row">{{name}}</th>
 	<td>{{detail}}</td>
 	<td>{{formattedDate}}</td>
+	<td>{{isFinish}}</td>
 	<td>
 		<input type="button" class="btnEdit btn btn-primary btn-sm" data-id="{{id}}" value="edit" />
 		<input type="button" class="btnDelete btn btn-sm" data-id="{{id}}" value="delete" />
@@ -132,7 +135,7 @@
 					}, function(data){
 						for(var i = 0; i< data.result.length; i++){
 							var currentTodo = data.result[i];
-							var currentDate = new Date(currentTodo.createDate)
+							var currentDate = new Date(currentTodo.deadline);
 							currentTodo.formattedDate = currentDate.getFullYear() + "/" + (currentDate.getMonth()+1) + "/" + currentDate.getDate();
 						}	
 						
@@ -162,7 +165,6 @@
 			            }
 			            
 			            var pagerRendered = Mustache.render(pagerTemplate, {
-			                currentNumber: data.currentPage,
 			                prevDisabled: (data.currentPage === 1),
 			                nextDisabled: (data.currentPage === data.totalPage),
 			                pager: getPager(data.currentPage ,data.totalPage)

@@ -63,6 +63,11 @@ public class TodoController {
 	@RequestMapping(path = "/add", method = RequestMethod.POST)
 	public String Add(Todo todo, HttpSession session) {
 		System.out.println(todo.getId());
+		
+		if(todo.getIsFinish() == null || "".equals(todo.getIsFinish())) {
+			todo.setIsFinish("N");
+		}
+		
 		todoService.addTodo(todo);
 		System.out.println(todo.getId());
 		return "redirect:/todo";
