@@ -31,7 +31,7 @@ public class TodoController {
 	final String QUERY_NAME_MODEL_KEY = "QUERY_NAME_MODEL_KEY";
 	final String QUERY_PAGE_NUMBER_MODEL_KEY = "QUERY_PAGE_NUMBER_MODEL_KEY";
 	final String TODO_LIST_TOTAL_PAGE_KEY = "TODO_LIST_TOTAL_PAGE_KEY";
-	final int TODO_PAGE_SIZE = 5;
+	final int TODO_PAGE_SIZE = 3;
 
 	
 	@Autowired
@@ -63,6 +63,11 @@ public class TodoController {
 	@RequestMapping(path = "/add", method = RequestMethod.POST)
 	public String Add(Todo todo, HttpSession session) {
 		System.out.println(todo.getId());
+		
+		if(todo.getIsFinish() == null || "".equals(todo.getIsFinish())) {
+			todo.setIsFinish("N");
+		}
+		
 		todoService.addTodo(todo);
 		System.out.println(todo.getId());
 		return "redirect:/todo";

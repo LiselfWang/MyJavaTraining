@@ -9,8 +9,6 @@ private int id;
 private String title;
 private String content;
 private Date createDate;
-
-@DateTimeFormat(pattern = "yyyy/MM/dd HH:mm:ss")  
 private Date publishDate;
 String status;
 

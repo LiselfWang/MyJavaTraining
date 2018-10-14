@@ -16,8 +16,8 @@ public class NewsServiceImpl implements NewsService {
     private NewsDao newsDao;
 	
 	@Override
-	public Pagerlist<NewsDto> getNewsList(){
-		List<NewsDto> result = newsDao.getNewsList();
+	public Pagerlist<NewsDto> getNewsShow(){
+		List<NewsDto> result = newsDao.getNewsShow();
 		Pagerlist<NewsDto> data = new Pagerlist<NewsDto>();
 		data.setResult(result);
 		return data;
@@ -30,14 +30,39 @@ public class NewsServiceImpl implements NewsService {
 	}
 	
 	@Override
+	public int getShowNewsCount(String keywords){
+		return newsDao.getShowNewsCount(keywords);
+	}
+	
+	
+	@Override
 	public int getNewsCount(String keywords){
 		return newsDao.getNewsCount(keywords);
 	}
+	
 	
 	@Override
 	public Pagerlist<NewsDto> getNewsitems(int pageIndex,String keywords,int pageSize){
 	List<NewsDto> result = newsDao.getNewsitems(pageIndex,keywords,pageSize);
 	int allCount = newsDao.getNewsCount(keywords);
+	int totalPage = allCount/pageSize;
+	if(allCount%pageSize!=0) {
+		totalPage++;
+	}
+	
+	
+	Pagerlist<NewsDto> data = new Pagerlist<NewsDto>();
+	data.setResult(result);
+	data.setTotalpage(totalPage);
+	data.setPagenumber(pageIndex);
+	data.setPagesize(pageSize);
+	return data;
+	}
+	
+	@Override
+	public Pagerlist<NewsDto> getShowitems(int pageIndex,String keywords,int pageSize){
+	List<NewsDto> result = newsDao.getShowitems(pageIndex,keywords,pageSize);
+	int allCount = newsDao.getShowNewsCount(keywords);
 	int totalPage = allCount/pageSize;
 	if(allCount%pageSize!=0) {
 		totalPage++;

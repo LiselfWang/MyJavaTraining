@@ -4,7 +4,7 @@
 <!--命名空间和接口保持一致-->
 <mapper namespace="com.leo.dao.TodoDao">
 	<sql id="allFields">
-		id,name,detail,updateDate,updateBy,createDate,createBy
+		id,name,detail,deadline,isFinish,updateDate,updateBy,createDate,createBy
 	</sql>
 	
 	<sql id="queryConditions">
@@ -35,13 +35,15 @@
     </select>
     
     <insert id="addTodo" useGeneratedKeys="true" keyProperty="id" parameterType="com.leo.dto.Todo" >
-    	insert TodoList(name,detail,createDate,createBy) values (#{name},#{detail},GETDATE(),'SYSTEM')
+    	insert TodoList(name,detail,deadline,isFinish,createDate,createBy) values (#{name},#{detail},#{deadline},#{isFinish},GETDATE(),'SYSTEM')
     </insert>
     
     <update id="updateTodo" parameterType="com.leo.dto.Todo" >
     	update TodoList set
     		name = #{name},
     		detail = #{detail},
+    		deadline = #{deadline},
+    		isFinish = #{isFinish},
     		updateDate = GETDATE(),
     		updateBy = 'SYSTEM'
     	where id  = #{id}

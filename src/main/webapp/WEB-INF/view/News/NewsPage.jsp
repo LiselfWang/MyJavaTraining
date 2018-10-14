@@ -5,8 +5,8 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
-<script src="https://cdn.bootcss.com/mustache.js/2.3.0/mustache.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/2.3.0/mustache.js"></script>
 <style>
 #title{
 width:1250px;
@@ -88,8 +88,8 @@ padding:5px;
 
 <script>
 $(function(){
-	getNewsitems();
-	function getNewsitems(){
+	getShowitems();
+	function getShowitems(){
 		$.getJSON(
 				"/news/getNewsitems",
 				{"pageIndex":$("#pageIndex").val(),
@@ -116,21 +116,21 @@ $(function(){
 	$("#query").click(function(){
 		$("#pageIndex").val(1);
 		$("#hiddenkeywords").val($("#querykeywords").val());
-		getNewsitems();
+		getShowitems();
 	})
 	
 	$("#prePage").click(function(){
 		var page = $("#pageIndex");
 		var index = parseInt(page.val());
 		page.val(index-1);
-		getNewsitems();
+		getShowitems();
 	})
 	
 		$("#nextPage").click(function(){
 		var page = $("#pageIndex");
 		var index = parseInt(page.val());
 		page.val(index+1);
-		getNewsitems();
+		getShowitems();
 	})
 	
 })
