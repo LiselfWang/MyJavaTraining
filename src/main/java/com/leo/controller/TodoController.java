@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.leo.service.TodoService;
+import com.leo.util.CheckUtil;
 import com.leo.viewModel.Pager;
 import com.leo.dto.Todo;
 
@@ -64,6 +65,10 @@ public class TodoController {
 	public String Add(Todo todo, HttpSession session) {
 		System.out.println(todo.getId());
 		
+		if(CheckUtil.isEmptyString(todo.getName()) || CheckUtil.isEmptyString(todo.getDetail())) {
+			return "todo/add";
+		}
+
 		if(todo.getIsFinish() == null || "".equals(todo.getIsFinish())) {
 			todo.setIsFinish("N");
 		}

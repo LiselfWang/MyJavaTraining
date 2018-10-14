@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.leo.dto.NewsDto;
 import com.leo.service.NewsService;
+import com.leo.util.CheckUtil;
 import com.leo.viewModel.Pagerlist;
 
 @Controller
@@ -44,6 +45,13 @@ public class ManageController{
 	
 	@RequestMapping(path = "/getAddInfo", method = RequestMethod.POST)
 	public String AddInfo(HttpSession session,NewsDto addsone) {
+		if(CheckUtil.isEmptyString(addsone.getTitle())||CheckUtil.isEmptyString(addsone.getContent())){
+			return "Manage/AddPage";
+		}
+		
+		if(addsone.getStatus()==null||"".equals(addsone.getStatus())) {
+			addsone.setStatus("N");
+		}
 		newsService.getAddInfo(addsone);
 		return "redirect:/manage";
 	
@@ -66,6 +74,13 @@ public class ManageController{
 	
 	@RequestMapping(path = "/getEditInfo", method = RequestMethod.POST)
 	public String getEditInfo(NewsDto editone,HttpSession session) {
+		if(CheckUtil.isEmptyString(editone.getTitle())||CheckUtil.isEmptyString(editone.getContent())){
+			return "Manage/EditPage";
+		}
+		
+		if(editone.getStatus()==null||"".equals(editone.getStatus())) {
+			editone.setStatus("N");
+		}
 		newsService.getEditInfo(editone);
 		return "redirect:/manage";
 	}

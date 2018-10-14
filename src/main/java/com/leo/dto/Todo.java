@@ -6,7 +6,9 @@ public class Todo extends BaseDto {
 	
 	private String name;
 	private String detail;
+	
 	private Date deadline;
+	
 	private String isFinish;
 	
 	public String getName() {
