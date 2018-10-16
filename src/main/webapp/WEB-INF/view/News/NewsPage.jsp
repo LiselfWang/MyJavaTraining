@@ -67,30 +67,12 @@
   
   <div class="row">
     <div class="col-sm">
-  <nav aria-label="Page navigation example">
-  <ul class="pagination">
-    <li class="page-item">
-    <input type="hidden" id="pageIndex" value="1"></input>
-      <a class="page-link" href="#" aria-label="Previous">
-        <span aria-hidden="true">&laquo;</span>
-        <span class="sr-only">Previous</span>
-      </a>
-    </li>
-    <li class="page-item"><a class="page-link" href="#">1</a></li>
-    <li class="page-item"><a class="page-link" href="#">2</a></li>
-    <li class="page-item"><a class="page-link" href="#">3</a></li>
-    <li class="page-item">
-      <a class="page-link" href="#" aria-label="Next">
-        <span aria-hidden="true">&raquo;</span>
-        <span class="sr-only">Next</span>
-      </a>
-    </li>
-  </ul>
-</nav>
+  <nav aria-label="Page navigation example" id="pageSection">
+  </nav>
  </div>
   </div>
  </div>
- 
+   <input type="hidden" id="pageIndex" value="1" />
 <script type="text/html" id="template">
 {{#newsList}}
 <tr>
@@ -98,6 +80,55 @@
 	<td class="date">{{standarddate}}</td>
 </tr>
 {{/newsList}}
+</script>
+
+<script type="text/html" id="pageTemplate">
+<ul class="pagination">
+{{#preDisabled}}
+    <li class="page-item disabled">
+      <a class="page-link" href="#" aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+        <span class="sr-only">Previous</span>
+      </a>
+    </li>
+{{/preDisabled}}
+
+{{^preDisabled}}
+    <li class="page-item">
+      <a class="page-link prePage" href="#" aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+        <span class="sr-only">Previous</span>
+      </a>
+    </li>
+{{/preDisabled}}
+
+{{#pager}}
+{{#disabled}}
+    <li class="page-item disabled"><a class="page-link" href="#">{{pageNumber}}</a></li>
+{{/disabled}}
+
+{{^disabled}}
+    <li class="page-item"><a class="page-link page" href="#">{{pageNumber}}</a></li>
+{{/disabled}}
+{{/pager}}
+
+{{#nextDisabled}}
+    <li class="page-item disabled">
+      <a class="page-link" href="#" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+        <span class="sr-only">Next</span>
+      </a>
+    </li>
+{{/nextDisabled}}
+{{^nextDisabled}}
+    <li class="page-item">
+      <a class="page-link nextPage" href="#" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+        <span class="sr-only">Next</span>
+      </a>
+    </li>
+{{/nextDisabled}}
+  </ul>
 </script>
 
 <script>
@@ -120,6 +151,26 @@ $(function(){
 					$("#newsList").html(realdata);	
 					$("#prePage").attr("disabled",data.pagenumber<=1);
 					$("#nextPage").attr("disabled",data.pagenumber>=data.totalpage);
+					
+					function getPageIndex(currentPage,totalPage){
+						var pageIndex = [];
+						for(var i=1;i<=totalPage;i++){
+							pageIndex.push({
+								pageNumber: i,
+								disabled: (i==currentPage)
+							})
+						}
+						return pageIndex;
+					}
+					
+					var temp = $("#pageTemplate").html();
+					var realPage = Mustache.render(temp,{
+						preDisabled: (data.pagenumber===1),
+						nextDisabled : (data.pagenumber===data.totalpage),
+						pager : getPageIndex(data.pagenumber,data.totalpage)
+					})
+					$("#pageSection").html(realPage);
+				
 				});
 	}
 	
@@ -131,22 +182,25 @@ $(function(){
 		$("#pageIndex").val(1);
 		$("#hiddenkeywords").val($("#querykeywords").val());
 		getShowitems();
-	})
+	})	
 	
-	$("#prePage").click(function(){
-		var page = $("#pageIndex");
-		var index = parseInt(page.val());
-		page.val(index-1);
-		getShowitems();
-	})
 	
-		$("#nextPage").click(function(){
-		var page = $("#pageIndex");
+		
+     	$("#pageSection").on("click",".page-link",function(){
+     		debugger;
+        var page = $("#pageIndex");
+        if($(this).is(".prePage")){
+        var index = parseInt(page.val());
+        page.val(index-1);
+        }else if($(this).is(".page")){
+		page.val($(this).text());
+		}else if($(this).is(".nextPage")){
 		var index = parseInt(page.val());
 		page.val(index+1);
-		getShowitems();
-	})
-	
+		}
+     	getShowitems();
+		return false;
+		})
 })
 </script>
 </body>

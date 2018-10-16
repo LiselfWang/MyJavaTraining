@@ -179,7 +179,7 @@ $(function(){
 		getNewsitems();
 	})
 	
-  
+
 	$(".pageSection").on("click",".page-link",function(){
 		var pn = $("#pageIndex");
 		if($(this).is(".prePage")){
