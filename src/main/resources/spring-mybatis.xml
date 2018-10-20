@@ -9,12 +9,12 @@
         <typeAlias alias="Borrow" type="com.leo.dto.Borrow" />
         <typeAlias alias="NewsDto" type="com.leo.dto.NewsDto" />
     </typeAliases>
-
-
     <mappers>
         <mapper resource="mapper/TodoMapper.xml" />
         <mapper resource="mapper/BorrowMapper.xml" />
         <mapper resource="mapper/NewsMapper.xml" />
     </mappers>
-
+	<!-- <settings>
+        <setting name="logImpl" value="LOG4J"/>
+    </settings>-->
 </configuration>

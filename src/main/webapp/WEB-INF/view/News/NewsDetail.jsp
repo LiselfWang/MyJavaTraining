@@ -43,7 +43,7 @@
     
      <div class="row">
     	<div class="col-sm">
-    	<textarea class="form-control" id="exampleFormControlTextarea1" rows="3">${checkone.content}</textarea>
+    	<div id="exampleFormControlTextarea1">${checkone.content}</div>
      	</div>
      </div>
      

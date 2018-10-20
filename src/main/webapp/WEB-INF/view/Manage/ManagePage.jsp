@@ -70,7 +70,7 @@
   <ul class="pagination">
 {{#prevDisabled}}
     <li class="page-item disabled">
-      <a class="page-link" href="#" aria-label="Previous">
+      <a class="page-link prePage" href="#" aria-label="Previous">
         <span aria-hidden="true">&laquo;</span>
         <span class="sr-only">Previous</span>
       </a>
@@ -88,7 +88,7 @@
 
 {{#pager}}
 {{#disabled}}
-    <li class="page-item disabled"><a class="page-link" href="#">{{number}}</a></li>
+    <li class="page-item disabled"><a class="page-link pager" href="#">{{number}}</a></li>
 {{/disabled}}
 
 {{^disabled}}
@@ -98,7 +98,7 @@
 
 {{#nextDisabled}}
     <li class="page-item disabled">
-      <a class="page-link" href="#" aria-label="Next">
+      <a class="page-link nextPage" href="#" aria-label="Next">
         <span aria-hidden="true">&raquo;</span>
         <span class="sr-only">Next</span>
       </a>
@@ -180,7 +180,7 @@ $(function(){
 	})
 	
 
-	$(".pageSection").on("click",".page-link",function(){
+	$(".pageSection").on("click",".page-link:not(.disabled)",function(){
 		var pn = $("#pageIndex");
 		if($(this).is(".prePage")){
 			var number = parseInt(pn.val());
