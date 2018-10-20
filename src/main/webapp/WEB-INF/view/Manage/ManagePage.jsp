@@ -36,16 +36,18 @@
 	<div class="col">
 		<table class="table table-striped table-dark">
 			<colgroup>
+			    <col style="width:200px;"/>
 				<col />
 				<col style="width:200px;"/>
-				<col style="width:200px;"/>
+				<col style="width:100px;"/>
 				<col style="width:200px;"/>
 			</colgroup>
 		  	<thead>
 			    <tr>
 			      <th><h4>新闻标题</h4></th>
+			      <th><h4>新闻内容</h4></th>
 			      <th><h4>发布日期</h4></th>
-			      <th><h4>发布状态</h4></th>
+			      <th><h4>发布</h4></th>
 			      <th><h4>操作</h4></th>
 			    </tr>
 			</thead>
@@ -120,6 +122,7 @@
 {{#newsList}}
 <tr>
 <td class="title">{{title}}</td>
+<td class="content">{{content}}</td>
 <td class="date">{{standarddate}}</td>
 <td class="status">{{status}}</td>
 <td>
