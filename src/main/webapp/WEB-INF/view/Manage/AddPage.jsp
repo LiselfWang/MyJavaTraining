@@ -74,10 +74,11 @@ label.error{
 		 rules: {
 			    title:{
 					required: true,
-					rangelength:[1,100]
+					rangelength:[1,30]
 				},
 				content: {
-					required: true
+					required: true,
+					rangelength:[1,100]
 				},
 				publishDate: {
 					required: true
