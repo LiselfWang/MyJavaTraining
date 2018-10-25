@@ -204,15 +204,18 @@ $(function(){
 	
 	$("#newsList").on("click",".delbtn",function(){
 		var currentid = $(this).data("key");
-		$.post("/manage/deleteItems",
-				{"id":currentid},
-				function(result){
-					if(result){
-						getNewsitems();
-					}else{
-						alert("failed");
-					}
-				})
+		if(window.confirm("是否确认删除")){
+			$.post("/manage/deleteItems",
+					{"id":currentid},
+					function(result){
+						if(result){
+							getNewsitems();
+						}else{
+							alert("failed");
+						}
+					})
+		}
+		
 	   })
 	   
 	 $("#newsList").on("click",".editbtn",function(){
