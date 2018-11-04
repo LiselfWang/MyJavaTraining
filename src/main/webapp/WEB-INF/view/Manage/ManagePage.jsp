@@ -218,12 +218,14 @@ $(function(){
 		
 	   })
 	   
+
 	 $("#newsList").on("click",".editbtn",function(){
 			var currentid = $(this).data("key");
 			window.location = "/manage/editPage?id="+currentid;
 	 })
 	
 	});
+	
 </script>
 </body>
 </html>

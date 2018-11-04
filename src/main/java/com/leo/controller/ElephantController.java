@@ -9,12 +9,10 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping(path = "/")
 public class ElephantController {
 
-	Animal puppy = Animal.ELEPHANT;
-
 	@RequestMapping(path = "/register", method = RequestMethod.GET)
 	public ModelAndView littlelephant() {
 		ModelAndView mv = new ModelAndView("myElephant");
-		mv.addObject("Animal", puppy);
+		// mv.addObject("Animal", puppy);
 		return mv;
 	}
 
@@ -24,7 +22,6 @@ public class ElephantController {
 		mv.addObject("weight", toy.getWeight());
 		mv.addObject("height", toy.getHeight());
 		mv.addObject("color", toy.getColor());
-		mv.addObject("Animal", Animal.ELEPHANT);
 		return mv;
 	}
 }

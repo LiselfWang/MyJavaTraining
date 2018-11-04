@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--命名空间和接口保持一致-->
+<mapper namespace="com.leo.dao.FeedbackDao">
+	<sql id="allFields">
+		id,title,content,submitPhoneNumber,submitEmail,type,isProcessed,updateDate,updateBy,createDate,createBy
+	</sql>
+	
+	<sql id="queryConditions">
+		title like CONCAT('%',#{keywords},'%')
+        or content like CONCAT('%',#{keywords},'%')
+	</sql>
+	
+    <select id="getAllFeedbacks" resultType="com.leo.dto.Feedback">
+        SELECT * FROM
+        (select
+        	<include refid="allFields" />,
+        	ROW_NUMBER() OVER(Order by id) AS RowId
+         from Feedback where
+         	<include refid="queryConditions" />
+         ) T
+         WHERE T.RowId &gt; #{pageSize} * (#{pageIndex} - 1) AND T.RowId &lt;= #{pageSize} * #{pageIndex}
+    </select>
+    
+    <select id="getAllFeedbacksCount" resultType="int">
+        select
+        	COUNT(1)
+         from Feedback where
+         	<include refid="queryConditions" />
+    </select>
+   
+    <select id="getFeedback" resultType="com.leo.dto.Feedback" parameterType="int">
+        select <include refid="allFields" /> from Feedback where id = #{id}
+    </select>
+    
+    <insert id="addFeedback" useGeneratedKeys="true" keyProperty="id" parameterType="com.leo.dto.Feedback" >
+    	insert Feedback(title,content,type,submitPhoneNumber,submitEmail,isProcessed,createDate,createBy)
+    		values (#{title},#{content},#{type},#{submitPhoneNumber},#{submitEmail},#{isProcessed},GETDATE(),'SYSTEM')
+    </insert>
+    
+    <update id="updateFeedback" parameterType="com.leo.dto.Feedback" >
+    	update Feedback set
+    		<if test="title != null">
+    			title = #{title},
+    		</if>
+    		<if test="content != null">
+    			content = #{content},
+    		</if>
+    		<if test="type != null">
+    			type = #{type},
+    		</if>
+    		<if test="submitPhoneNumber != null">
+    			submitPhoneNumber = #{submitPhoneNumber},
+    		</if>
+    		<if test="submitEmail != null">
+    			submitEmail = #{submitEmail},
+    		</if>
+    		<if test="isProcessed != null">
+    			isProcessed = #{isProcessed},
+    		</if>
+    		
+    		updateDate = GETDATE(),
+    		updateBy = 'SYSTEM'
+    	where id  = #{id}
+    		
+    </update>
+</mapper>

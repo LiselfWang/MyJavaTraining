@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        
+<!--命名空间和接口保持一致-->
+<mapper namespace="com.leo.dao.PractiseDao">
+<sql id="allColumns">
+		name,age,job,hobby,url
+</sql>
+
+  <select id="getPlayList" resultType="com.leo.dto.PractiseDto">
+  select <include refid="allColumns"/> from practiseList
+   </select>
+  
+   </mapper>

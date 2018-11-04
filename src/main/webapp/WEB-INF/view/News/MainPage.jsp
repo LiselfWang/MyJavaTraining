@@ -78,14 +78,14 @@ $(function(){
 		$.getJSON(
 				"/news/getNewsList",
 				function(data){
-					for(var i=0;i<data.result.length;i++){
-						var current = data.result[i];
+					for(var i=0;i<data.length;i++){
+						var current = data[i];
 						var date = new Date(current.createDate);
 						current.standarddate = date.getFullYear()+"/"+(date.getMonth()+1)+"/"+date.getDate();	
 					}
 					
 					var tmp = $("#template").html();
-					var realdata = Mustache.render(tmp,{"newsList":data.result});
+					var realdata = Mustache.render(tmp,{"newsList":data});
 					$("#newsList").html(realdata);	
 				});
 	}
