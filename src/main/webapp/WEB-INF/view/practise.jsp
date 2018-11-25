@@ -80,7 +80,7 @@ $(function(){
   <li class="list-group-item">职业：{{job}}</li>
   <li class="list-group-item">兴趣爱好：{{hobby}}</li>
   <li class="list-group-item">
-     个人肖像：<img style="height:200px;" src="{{url}}"></img>
+     个人肖像：<img style="height:200px;" src="{{url}}" id="images"></img>
   </li>
 {{/listContent}}
 </script>
