@@ -15,23 +15,13 @@ import com.leo.dto.PractiseDto;
 import com.leo.service.PractiseService;
 
 @Controller
-@RequestMapping("/practise")
+@RequestMapping("/maomao")
 public class PractiseController {
 
-	@Autowired
-	private PractiseService practiseService;
-
 	@RequestMapping(path = "", method = RequestMethod.GET)
-	public ModelAndView show(HttpSession session) {
-
-		ModelAndView mv = new ModelAndView("practise");
-		return mv;
+	public String goToWeb(HttpSession session) {
+		String website = "Practise/mainpage";
+		return website;
 	}
 
-	@ResponseBody
-	@RequestMapping(path = "/getPlayList", method = RequestMethod.GET)
-	public List<PractiseDto> getPlayList() {
-		List<PractiseDto> data = practiseService.getPlayList();
-		return data;
-	}
 }
