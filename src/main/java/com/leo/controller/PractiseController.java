@@ -24,4 +24,10 @@ public class PractiseController {
 		return website;
 	}
 
+	@RequestMapping(path = "/myself", method = RequestMethod.GET)
+	public String goToIntroduction(HttpSession session) {
+		String website = "Practise/introductionPage";
+		return website;
+	}
+
 }
