@@ -65,11 +65,11 @@ float:right;
 .navigation-center{
 margin: 0px -160px;
 width:400px; 
-height:200px;
+height:300px;
 position: absolute;
 left: 50%;
-background-size: 200px 200px !important;
-border:1px solid black;
+top:-38px;
+background-size: 200px 260px !important;
 }
 
 .title{
