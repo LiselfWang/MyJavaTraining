@@ -191,6 +191,7 @@ color:tomato;
 } */
 
 </style>
+
 </head>
 <!-- <body>
 
@@ -203,7 +204,7 @@ color:tomato;
 	<div class="loginNavigation">
 		<div class="login">
 			您好，欢迎来到猫咪交易网&nbsp;&nbsp;&nbsp;
-			<a>登录</a>&nbsp;|&nbsp;<a>免费注册</a>
+			<a id="login">登录</a>&nbsp;|&nbsp;<a id="register">免费注册</a>
 		</div>	
 	</div>
 	<div class="navigation">
@@ -263,5 +264,10 @@ color:tomato;
 		<a href="http://www.maomijiaoyi.com/index.php?/pinzhongdaquan_5.html">查看更多 >></a>
 	</div>
 </div>
+<script>
+$("#register").click(function(){
+	window.location("/maomao/register");
+})
+</script>
 </body>
 </html>
