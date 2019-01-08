@@ -10,6 +10,7 @@
         <typeAlias alias="NewsDto" type="com.leo.dto.NewsDto" />
         <typeAlias alias="Feedback" type="com.leo.dto.Feedback" />
         <typeAlias alias="Practise" type="com.leo.dto.PractiseDto" />
+        <typeAlias alias="Register" type="com.leo.dto.RegisterDto" />
     </typeAliases>
     <mappers>
         <mapper resource="mapper/TodoMapper.xml" />
@@ -17,6 +18,7 @@
         <mapper resource="mapper/NewsMapper.xml" />
         <mapper resource="mapper/FeedbackMapper.xml" />
         <mapper resource="mapper/PractiseMapper.xml" />
+        <mapper resource="mapper/RegisterMapper.xml" />
     </mappers>
 	<!-- <settings>
         <setting name="logImpl" value="LOG4J"/>
