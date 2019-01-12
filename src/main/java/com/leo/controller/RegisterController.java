@@ -4,6 +4,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -16,7 +17,7 @@ import com.leo.viewModel.Pagerlist;
 @RequestMapping("/maomao")
 public class RegisterController {
 
-	final int pagesize = 5;
+	final int pagesize = 2;
 
 	@Autowired
 	private RegisterService registerService;
@@ -46,8 +47,8 @@ public class RegisterController {
 	}
 
 	@RequestMapping(path = "/addInfo", method = RequestMethod.POST)
-	public String getInfo(RegisterDto register, HttpSession session) {
-		registerService.insertItem(register);
+	public String getAddInfo(RegisterDto addOne, HttpSession session) {
+		registerService.insertItem(addOne);
 		return "redirect:/maomao/register";
 	}
 
@@ -58,5 +59,26 @@ public class RegisterController {
 			pageNumber = 1;
 		}
 		return registerService.getRegisterList(keywords, pageNumber, pagesize);
+	}
+
+	@RequestMapping(path = "/edit", method = RequestMethod.GET)
+	public String goToEditPage(int id, HttpSession session, Model model) {
+		RegisterDto editOne = registerService.getEditItem(id);
+		model.addAttribute("editOne", editOne);
+		return "Register/editPage";
+	}
+
+	@RequestMapping(path = "/editInfo", method = RequestMethod.POST)
+	public String getEditInfo(RegisterDto editOne, HttpSession session) {
+		registerService.editItem(editOne);
+		return "redirect:/maomao/register";
+	}
+
+	@ResponseBody
+	@RequestMapping(path = "/delete", method = RequestMethod.POST)
+	public boolean deleteItem(int id, HttpSession session) {
+		registerService.deleteItem(id);
+		boolean result = true;
+		return result;
 	}
 }

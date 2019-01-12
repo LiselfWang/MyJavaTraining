@@ -5,7 +5,7 @@
 <!--命名空间和接口保持一致-->
 <mapper namespace="com.leo.dao.BorrowDao">
 <sql id="allColumns">
-		name,classes,bookname,borrowdate,createBy,updateDate,updateBy
+		id,name,classes,bookname,borrowdate,createBy,updateDate,updateBy
 	</sql>
 	
 <sql id="queryConditions">
